@@ -1,0 +1,115 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/activity_login"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:paddingBottom="@dimen/activity_vertical_margin"
+    android:paddingLeft="@dimen/activity_horizontal_margin"
+    android:paddingRight="@dimen/activity_horizontal_margin"
+
+    android:paddingTop="@dimen/activity_vertical_margin"
+    tools:context=".Login"
+    android:background="@drawable/splash">
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+       >
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical"
+            >
+    <ImageView
+        android:id="@+id/imageView3"
+        android:layout_centerHorizontal="true"
+        android:layout_width="wrap_content"
+        android:layout_height="130dp"
+        app:srcCompat="@drawable/textsplash" />
+
+    <LinearLayout
+        android:id="@+id/layout2"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/imageView3"
+        android:gravity="center"
+        android:orientation="horizontal">
+
+        <ImageView
+            android:id="@+id/imageView2"
+            android:layout_width="122dp"
+            android:layout_height="78dp"
+            android:layout_marginTop="12dp"
+            app:srcCompat="@drawable/logosplash" />
+    </LinearLayout>
+
+
+    <TextView
+        android:id="@+id/userType"
+        android:layout_marginTop="8dp"
+        android:textSize="18sp"
+        android:textStyle="bold"
+        android:textAlignment="center"
+        android:layout_below="@+id/layout2"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Login" />
+
+
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="20dp"
+            android:gravity="center"
+            android:orientation="vertical"
+            android:padding="10dp">
+
+            <EditText
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:id="@+id/txtUsername"
+                android:background="#DC272B2A"
+                android:hint="Username"
+                android:textColorHint="@color/white"
+                android:textColor="@color/white"
+                android:padding="20dp"
+                android:drawableLeft="@drawable/ic_baseline_person_outline_24"
+                android:drawablePadding="20dp" android:layout_marginTop="10dp" android:layout_marginStart="10dp"
+                android:layout_marginEnd="10dp" android:layout_marginBottom="10dp"/>
+
+            <EditText
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:id="@+id/txtPassword"
+                android:layout_below="@id/txtUsername"
+                android:background="#DC272B2A"
+                android:hint="Password"
+                android:textColorHint="@color/white"
+                android:textColor="@color/white"
+                android:padding="20dp"
+                android:drawableLeft="@drawable/ic_baseline_info_24"
+                android:drawablePadding="20dp"
+                android:inputType="textPassword" android:layout_marginTop="10dp" android:layout_marginStart="10dp"
+                android:layout_marginEnd="10dp" android:layout_marginBottom="10dp"/>
+
+            <Button
+                android:id="@+id/btnLogin"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_margin="8dp"
+                android:layout_marginTop="7dp"
+                android:backgroundTint="@color/colorPrimary"
+                android:padding="15dp"
+                android:text="Login"
+                android:textAllCaps="false"
+                android:textColor="@android:color/white"
+                android:textSize="25sp" />
+        </LinearLayout>
+        </LinearLayout>
+    </ScrollView>
+
+
+</RelativeLayout>

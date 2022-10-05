@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="DesignSurface">
+    <option name="filePathToZoomLevelMap">
+      <map>
+        <entry key="..\:/Users/ninja/Documents/Projects/IM/app/src/main/res/drawable/help.xml" value="0.171" />
+        <entry key="..\:/Users/ninja/Documents/Projects/IM/app/src/main/res/layout/activity_choose_user_type.xml" value="0.22447916666666667" />
+        <entry key="..\:/Users/ninja/Documents/Projects/IM/app/src/main/res/layout/activity_home.xml" value="0.1" />
+        <entry key="..\:/Users/ninja/Documents/Projects/IM/app/src/main/res/layout/activity_login.xml" value="0.25" />
+        <entry key="..\:/Users/ninja/Documents/Projects/IM/app/src/main/res/layout/activity_main.xml" value="0.33" />
+        <entry key="..\:/Users/ninja/Documents/Projects/IM/app/src/main/res/layout/activity_register.xml" value="0.18" />
+        <entry key="..\:/Users/ninja/Documents/Projects/IM/app/src/main/res/layout/activity_trans.xml" value="0.33" />
+        <entry key="..\:/Users/ninja/Documents/Projects/IM/app/src/main/res/layout/activity_update_item.xml" value="0.2234375" />
+        <entry key="..\:/Users/ninja/Documents/Projects/IM/app/src/main/res/layout/addstock.xml" value="0.18" />
+        <entry key="..\:/Users/ninja/Documents/Projects/IM/app/src/main/res/layout/app_bar_main.xml" value="0.13" />
+        <entry key="..\:/Users/ninja/Documents/Projects/IM/app/src/main/res/layout/autotext_list.xml" value="0.22447916666666667" />
+        <entry key="..\:/Users/ninja/Documents/Projects/IM/app/src/main/res/layout/card_layout.xml" value="0.33381712626995647" />
+        <entry key="..\:/Users/ninja/Documents/Projects/IM/app/src/main/res/layout/content_main.xml" value="0.1" />
+        <entry key="..\:/Users/ninja/Documents/Projects/IM/app/src/main/res/layout/home.xml" value="0.1" />
+        <entry key="..\:/Users/ninja/Documents/Projects/IM/app/src/main/res/layout/input_dia.xml" value="0.22447916666666667" />
+        <entry key="..\:/Users/ninja/Documents/Projects/IM/app/src/main/res/layout/invoice.xml" value="0.33" />
+        <entry key="..\:/Users/ninja/Documents/Projects/IM/app/src/main/res/layout/list_items.xml" value="0.22447916666666667" />
+        <entry key="..\:/Users/ninja/Documents/Projects/IM/app/src/main/res/layout/m_items.xml" value="0.22447916666666667" />
+        <entry key="..\:/Users/ninja/Documents/Projects/IM/app/src/main/res/layout/nav_header_main.xml" value="0.33" />
+        <entry key="..\:/Users/ninja/Documents/Projects/IM/app/src/main/res/menu/search_bar.xml" value="0.22447916666666667" />
+      </map>
+    </option>
+  </component>
+  <component name="ProjectRootManager" version="2" languageLevel="JDK_11" default="true" project-jdk-name="Android Studio default JDK" project-jdk-type="JavaSDK">
+    <output url="file://$PROJECT_DIR$/build/classes" />
+  </component>
+  <component name="ProjectType">
+    <option name="id" value="Android" />
+  </component>
+</project>
