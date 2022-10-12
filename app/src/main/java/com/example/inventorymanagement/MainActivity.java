@@ -30,7 +30,7 @@ import java.util.ArrayList;
 public class MainActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
 
 
-    TextView navhead, navsub,txtUsername;
+    TextView navhead, navsub,txtUsername,hometext;
 
     public static String companyEmail, storeName,uuid, Ulevel= "";
 
@@ -95,6 +95,11 @@ String username,userlevel;
         uuid=bundle.getString("userName");
         Ulevel=bundle.getString("userLevel");
 
+       // hometext =findViewById(R.id.hometext);
+      //  hometext.setText(storeName);
+
+
+
     }
 
     @Override
@@ -107,10 +112,14 @@ String username,userlevel;
                 navsub = (TextView) headerView.findViewById(R.id.navsub);
                 txtUsername= (TextView) headerView.findViewById(R.id.txtUsername);
 
+           //     hometext =findViewById(R.id.hometext);
+           //     hometext.setText(storeName);
 
                 navhead.setText(storeName);
                 navsub.setText(companyEmail);
                 txtUsername.setText(uuid);
+
+
 
 
                 if(Ulevel.equals("admin")){
@@ -201,15 +210,27 @@ String username,userlevel;
             FragmentManager fragmentManager = getSupportFragmentManager();
             fragmentManager.beginTransaction().replace(R.id.content_frame, new home()).commit();
         } else if (id == R.id.nav_transaction) {
-           /* FragmentManager fragmentManager = getSupportFragmentManager();
-            fragmentManager.beginTransaction().replace(R.id.content_frame, new transactions()).commit();*/
+            FragmentManager fragmentManager = getSupportFragmentManager();
+            fragmentManager.beginTransaction().replace(R.id.content_frame, new transactions()).commit();
         } else if (id == R.id.nav_customers) {
-          /*  FragmentManager fragmentManager = getSupportFragmentManager();
-            fragmentManager.beginTransaction().replace(R.id.content_frame, new customers()).commit();*/
+            FragmentManager fragmentManager = getSupportFragmentManager();
+            fragmentManager.beginTransaction().replace(R.id.content_frame, new customers()).commit();
         } else if (id == R.id.nav_summary) {
            /* FragmentManager fragmentManager = getSupportFragmentManager();
             fragmentManager.beginTransaction().replace(R.id.content_frame, new summary()).commit();*/
-        } else if (id == R.id.nav_dev) {
+        }
+        else if (id == R.id.nav_users) {
+           /* FragmentManager fragmentManager = getSupportFragmentManager();
+            fragmentManager.beginTransaction().replace(R.id.content_frame, new summary()).commit();*/
+            Toast.makeText(this, "Users Clicked", Toast.LENGTH_SHORT).show();
+        }
+        else if (id == R.id.nav_expo) {
+           /* FragmentManager fragmentManager = getSupportFragmentManager();
+            fragmentManager.beginTransaction().replace(R.id.content_frame, new summary()).commit();*/
+            Toast.makeText(this, "Expo Clicked", Toast.LENGTH_SHORT).show();
+        }
+
+        else if (id == R.id.nav_dev) {
            /* Intent i = new Intent(this, Developer.class);
             startActivity(i);*/
         } else if (id == R.id.nav_about) {
@@ -228,12 +249,12 @@ String username,userlevel;
             startActivity(i);
 
         } else if (R.id.btncust == id) {
-         /*   FragmentManager fragmentManager = getSupportFragmentManager();
-            fragmentManager.beginTransaction().replace(R.id.content_frame, new customers()).commit();*/
+           FragmentManager fragmentManager = getSupportFragmentManager();
+            fragmentManager.beginTransaction().replace(R.id.content_frame, new customers()).commit();
 
         } else if (R.id.btntrans == id) {
-         /*   FragmentManager fragmentManager = getSupportFragmentManager();
-            fragmentManager.beginTransaction().replace(R.id.content_frame, new transactions()).commit();*/
+            FragmentManager fragmentManager = getSupportFragmentManager();
+            fragmentManager.beginTransaction().replace(R.id.content_frame, new transactions()).commit();
 
         } else if (R.id.btninventory == id) {
             FragmentManager fragmentManager = getSupportFragmentManager();

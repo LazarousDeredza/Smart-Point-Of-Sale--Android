@@ -4,6 +4,7 @@ package com.example.inventorymanagement;
 
 import static com.example.inventorymanagement.MainActivity.fab;
 
+import android.content.SharedPreferences;
 import android.os.Bundle;
 
 import android.view.LayoutInflater;
@@ -14,9 +15,13 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.annotation.Nullable;
+import androidx.appcompat.app.ActionBar;
 import androidx.fragment.app.Fragment;
 
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
+
 import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.Date;
 
 public class home extends Fragment {
@@ -29,6 +34,18 @@ public class home extends Fragment {
     String uid;
 
 
+
+    TextView hometext;
+
+    public static String companyEmail, storeName= "";
+
+    private  MyDbHelper dbHelper;
+    private ArrayList<CompanyModel> list;
+
+
+
+
+
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container,
@@ -38,6 +55,11 @@ public class home extends Fragment {
 
 
         MainActivity.flag = 0;
+
+
+
+
+
         return v;
 
 
@@ -53,10 +75,18 @@ public class home extends Fragment {
         // getActivity().getPreferences(Context.MODE_PRIVATE);
         // String defaultValue = "Medical Store";
         // String sname = sharedPref.getString("sname", defaultValue);
+        dbHelper=new MyDbHelper(getContext());
+        list=new ArrayList<>();
 
 
-                TextView tv = (TextView) v.findViewById(R.id.hometext);
-                tv.setText("Store Name");
+        list=dbHelper.getAllCOMPANY();
+
+        storeName=list.get(0).getStoreName();
+        companyEmail=list.get(0).getEmail();
+
+        TextView tv = (TextView) v.findViewById(R.id.hometext);
+        tv.setText(storeName);
+
 
 
 

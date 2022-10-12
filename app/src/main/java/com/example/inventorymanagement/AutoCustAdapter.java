@@ -14,14 +14,14 @@ import java.util.List;
  * Created by corei3 on 23-07-2017.
  */
 
-public class AutoCustAdapter extends ArrayAdapter<ModelCustomer> {
+public class AutoCustAdapter extends ArrayAdapter<Modelcustomer> {
 
     Context context;
     int resource, textViewResourceId;
-    ArrayList<ModelCustomer> modelcust, tempModels, suggestions;
+    ArrayList<Modelcustomer> modelcust, tempModels, suggestions;
     String custkey = "", amt = "", custname = "";
 
-    public AutoCustAdapter(Context context, int resource, int textViewResourceId, ArrayList<ModelCustomer> modelcust) {
+    public AutoCustAdapter(Context context, int resource, int textViewResourceId, ArrayList<Modelcustomer> modelcust) {
 
         super(context, resource, textViewResourceId, modelcust);
         this.context = context;
@@ -29,8 +29,8 @@ public class AutoCustAdapter extends ArrayAdapter<ModelCustomer> {
         this.textViewResourceId = textViewResourceId;
         this.modelcust = modelcust;
         // tempItems = new ArrayList<Model>(items);
-        this.tempModels = (ArrayList<ModelCustomer>) modelcust.clone();
-        this.suggestions = new ArrayList<ModelCustomer>();
+        this.tempModels = (ArrayList<Modelcustomer>) modelcust.clone();
+        this.suggestions = new ArrayList<Modelcustomer>();
     }
 
     @Override
@@ -40,7 +40,7 @@ public class AutoCustAdapter extends ArrayAdapter<ModelCustomer> {
             LayoutInflater inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
             view = inflater.inflate(R.layout.autotext_list, parent, false);
         }
-        final ModelCustomer model = modelcust.get(position);
+        final Modelcustomer model = modelcust.get(position);
         if (model != null) {
 
             TextView item = (TextView) view.findViewById(R.id.item_name);
@@ -62,10 +62,10 @@ public class AutoCustAdapter extends ArrayAdapter<ModelCustomer> {
 
         @Override
         public CharSequence convertResultToString(Object resultValue) {
-            String str = ((ModelCustomer) resultValue).getEiname();
-            custkey = ((ModelCustomer) resultValue).getKey();
-            amt = ((ModelCustomer) resultValue).getEmoney();
-            custname = ((ModelCustomer) resultValue).getEiname();
+            String str = ((Modelcustomer) resultValue).getEiname();
+            custkey = ((Modelcustomer) resultValue).getKey();
+            amt = ((Modelcustomer) resultValue).getEmoney();
+            custname = ((Modelcustomer) resultValue).getEiname();
             return str;
         }
 
@@ -73,7 +73,7 @@ public class AutoCustAdapter extends ArrayAdapter<ModelCustomer> {
         protected FilterResults performFiltering(CharSequence constraint) {
             if (constraint != null) {
                 suggestions.clear();
-                for (ModelCustomer model : tempModels) {
+                for (Modelcustomer model : tempModels) {
                     if (model.getEiname().toLowerCase().contains(constraint.toString().toLowerCase())) {
                         suggestions.add(model);
                     }
@@ -89,10 +89,10 @@ public class AutoCustAdapter extends ArrayAdapter<ModelCustomer> {
 
         @Override
         protected void publishResults(CharSequence constraint, FilterResults results) {
-            List<ModelCustomer> filterList = (ArrayList<ModelCustomer>) results.values;
+            List<Modelcustomer> filterList = (ArrayList<Modelcustomer>) results.values;
             if (results != null && results.count > 0) {
                 clear();
-                for (ModelCustomer model : filterList) {
+                for (Modelcustomer model : filterList) {
                     add(model);
                     notifyDataSetChanged();
                 }

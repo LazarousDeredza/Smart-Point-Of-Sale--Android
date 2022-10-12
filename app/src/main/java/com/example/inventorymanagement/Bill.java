@@ -9,6 +9,8 @@ import android.widget.TextView;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
 import java.util.StringTokenizer;
 
 public class Bill extends AppCompatActivity {
@@ -82,11 +84,20 @@ public class Bill extends AppCompatActivity {
                 BillModel bill=dbHelper.getBill(id);
 
 
-                Log.e("billDate","Date = "+bill.getDate());
+                //Log.e("billDate","Date = "+bill.getDateBilled());
+
+        String DateCreated="";
+
+        Calendar r = Calendar.getInstance();
+        SimpleDateFormat f = new SimpleDateFormat("dd-MM-yyyy");
+        SimpleDateFormat m = new SimpleDateFormat("HH:mm");
+        DateCreated=f.format(r.getTime()) + " " + m.format(r.getTime()) ;
+
+
 
 
                 totamt.setText(bill.getTotalAmount());
-                date.setText(bill.getDate());
+                date.setText(DateCreated);
                 transid.setText(bill.getId());
                 String items =bill.getItems();
                 StringTokenizer st = new StringTokenizer(items, "®");

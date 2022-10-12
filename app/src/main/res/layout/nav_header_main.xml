@@ -44,17 +44,16 @@
 
         <TextView
             android:id="@+id/textView2"
+            android:textAlignment="textEnd"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginRight="10dp"
-            android:layout_marginLeft="10dp"
-            android:text="User:" />
+            android:text="User :" />
 
         <TextView
             android:id="@+id/txtUsername"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginRight="10dp"
+           android:textAlignment="textStart"
             android:layout_marginLeft="10dp"
             android:text="TheLazarous" />
     </LinearLayout>

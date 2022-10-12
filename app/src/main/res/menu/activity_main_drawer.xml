@@ -19,6 +19,14 @@
             android:icon="@drawable/customers"
             android:title="Customers" />
         <item
+            android:id="@+id/nav_users"
+            android:icon="@drawable/seller"
+            android:title="Users" />
+        <item
+            android:id="@+id/nav_expo"
+            android:icon="@drawable/editicon"
+            android:title="Export Data" />
+        <item
             android:id="@+id/nav_summary"
             android:icon="@drawable/summary"
             android:title="Summary" />

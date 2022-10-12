@@ -207,6 +207,8 @@ public class items extends Fragment implements SearchView.OnQueryTextListener {
         models.clear();
 
         list= dbHelper.getAllStocks();
+
+
         Log.d("list length =",String.valueOf(list.size()));
         for (int i=0 ; i < list.size();i++ ) {
             StockModel stockModel = new StockModel(list.get(i).getId(),list.get(i).getProductName(),
@@ -215,8 +217,18 @@ public class items extends Fragment implements SearchView.OnQueryTextListener {
                     list.get(i).getSellingPrice(),list.get(i).getBarcode(),
                     list.get(i).getUnit(),list.get(i).getDescription(),list.get(i).getDateAdded(),
                     list.get(i).getDateUpdated());
+
+            System.out.println(list.get(i).getDateUpdated());
             models.add(stockModel);
         }
+
+        String TransDate=models.get(0).getDateUpdated();
+        System.out.println(" Date added  =========" +TransDate);
+
+
+
+
+
         System.out.println("model length = "+models.size());
         System.out.println(models);
 

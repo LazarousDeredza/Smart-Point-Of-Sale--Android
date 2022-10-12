@@ -44,7 +44,7 @@ public class Trans extends AppCompatActivity implements View.OnClickListener {
     EditText edate, ept, edoc, eage, due;
     private int mYear, mMonth, mDay;
     ArrayList<ListModel> listmodel = new ArrayList<>();
-    ArrayList<ModelCustomer> modelcustomers = new ArrayList<>();
+    ArrayList<Modelcustomer> modelcustomers = new ArrayList<>();
     ListView lv;
     Button btn, custbtn;
     static Button gen;
@@ -84,18 +84,7 @@ public class Trans extends AppCompatActivity implements View.OnClickListener {
 
         dbHelper = new MyDbHelper(this);
 
-       /* mAuth = FirebaseAuth.getInstance();
-        uid = mAuth.getCurrentUser().getUid();
-        db = FirebaseDatabase.getInstance().getReference().child("Users").child(uid).child("Inventory");
-        dbi = FirebaseDatabase.getInstance().getReference().child("Users").child(uid).child("Invoice");
-        dbc = FirebaseDatabase.getInstance().getReference().child("Users").child(uid).child("Customer");
-        dbs = FirebaseDatabase.getInstance().getReference().child("Users").child(uid).child("Summary");
 
-        db.keepSynced(true);
-        dbi.keepSynced(true);
-        dbc.keepSynced(true);
-        dbs.keepSynced(true);
-*/
         btn = (Button) findViewById(R.id.btnadd);
         gen = (Button) findViewById(R.id.genbtn);
         custbtn = (Button) findViewById(R.id.regcust);
@@ -153,17 +142,20 @@ public class Trans extends AppCompatActivity implements View.OnClickListener {
                                 // save to Database
 
 
+                                String dateCreated="";
 
 
-                                Calendar cal = Calendar.getInstance();
+                                Calendar cl = Calendar.getInstance();
                                 SimpleDateFormat ft = new SimpleDateFormat("dd-MM-yyyy");
-                                String dateBilled=ft.format(cal.getTime()) ;
+                                SimpleDateFormat fn = new SimpleDateFormat("HH:mm");
+                                dateCreated=ft.format(cl.getTime()) + " " + fn.format(cl.getTime()) ;
 
+                                // Log.e("dateeee",dateCreated);
 
-                                String k = String.valueOf(dbHelper.insertToBill(items, dateBilled, gtotamt));
+                                String k = String.valueOf(dbHelper.insertToBill(items, dateCreated, gtotamt));
 
                                BillModel m=dbHelper.getBill(k);
-                                Log.e("billDetails","ID= "+m.getId()+" Date = "+m.getDate()+" items= "+m.getItems()+" Tot = "+m.getTotalAmount());
+                               // Log.e("billDetails","ID= "+m.getId()+" Date = "+m.getDateBilled()+" items= "+m.getItems()+" Tot = "+m.getTotalAmount());
 
 
 
@@ -175,7 +167,7 @@ public class Trans extends AppCompatActivity implements View.OnClickListener {
 
                                 SummaryModel model = dbHelper.getSummary("1");
 
-                                Log.d("summary","Amount =" +model.getAmount()+" MonthAmount= "+model.getMonthAmount()+"" +
+                                Log.e("summary","Amount =" +model.getAmount()+" MonthAmount= "+model.getMonthAmount()+"" +
                                         " Month= "+model.getMonth()+" Month Kound= "+model.getMonthCount()+" Kound ="+ model.getCount()+" "+"" +
                                         " Trans = "+model.getTrans()+" Date = "+model.getDate());
 
@@ -239,32 +231,26 @@ public class Trans extends AppCompatActivity implements View.OnClickListener {
 
 
                                 // log
-                              /*  db.getParent().child("Log").child("log")
-                                        .addListenerForSingleValueEvent(new ValueEventListener() {
-                                            @Override
-                                            public void onDataChange(DataSnapshot dataSnapshot) {
-                                                String l = (String) dataSnapshot.getValue();
-                                                String date = l.substring(0, 10);
+
                                                 Calendar calendar = Calendar.getInstance();
                                                 SimpleDateFormat format = new SimpleDateFormat("dd-MM-yyyy");
                                                 SimpleDateFormat fm = new SimpleDateFormat("HH:mm");
-                                                if (format.format(calendar.getTime()).equals(date)) {
-                                                    l = l.substring(11);
-                                                    db.getParent().child("Log").child("log")
-                                                            .setValue(format.format(calendar.getTime()) + "\n["
-                                                                    + fm.format(calendar.getTime())
-                                                                    + "] Transaction. Amount:" + gtotamt + "\n" + l);
-                                                } else {
-                                                    db.getParent().child("Log").child("log")
-                                                            .setValue(format.format(calendar.getTime()) + "\n["
-                                                                    + fm.format(calendar.getTime())
-                                                                    + "] Transaction. Amount:" + gtotamt + "\n\n" + l);
-                                                }
 
-                                            }
+                                                String DCreated=format.format(calendar.getTime()) + " " + fm.format(calendar.getTime()) ;
 
 
-                                        });*/
+
+                                String log=format.format(calendar.getTime()) + "\n["
+                                        + fm.format(calendar.getTime()) + "] Transaction. Amount: " + gtotamt + "\n";
+
+
+
+                                    long id2=dbHelper.insertToLog(
+                                        ""+log,
+                                        ""+DCreated);
+
+
+
 
                                 Toast.makeText(Trans.this, "Bill Saved", Toast.LENGTH_SHORT).show();
                                 Intent i = new Intent(getApplicationContext(), Bill.class);
@@ -337,10 +323,10 @@ public class Trans extends AppCompatActivity implements View.OnClickListener {
 
         modelcustomers.clear();
 
-        ArrayList<ModelCustomer> m = dbHelper.getAllCUSTOMERS();
+        ArrayList<Modelcustomer> m = dbHelper.getAllCUSTOMERS();
 
         for (int i = 0; i < m.size(); i++) {
-            ModelCustomer modelCustomer = new ModelCustomer(
+            Modelcustomer modelCustomer = new Modelcustomer(
                     m.get(i).getEiname(),
                     m.get(i).getEphoneNo(),
                     m.get(i).getEdate(),
@@ -422,7 +408,7 @@ public class Trans extends AppCompatActivity implements View.OnClickListener {
 
     protected void addbtn() {
 
-        if (listmodel.size() < 7) {
+        if (listmodel.size() < 8) {
             final String item = adapter.det()[0];
             final String batch = adapter.det()[1];
             final String expdate = adapter.det()[2];

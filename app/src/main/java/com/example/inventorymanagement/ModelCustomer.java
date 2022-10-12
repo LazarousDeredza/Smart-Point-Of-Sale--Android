@@ -1,6 +1,6 @@
 package com.example.inventorymanagement;
 
-public class ModelCustomer {
+public class Modelcustomer {
 
     private String einame;
     private String ephoneNo;
@@ -22,11 +22,11 @@ public class ModelCustomer {
 
 
 
-    public ModelCustomer() {
+    public Modelcustomer() {
 
     }
 
-    public ModelCustomer(String einame, String ephoneNo, String edate, String emoney, String eaddr, String key) {
+    public Modelcustomer(String einame, String ephoneNo, String edate, String emoney, String eaddr, String key) {
         this.einame = einame;
         this.ephoneNo = ephoneNo;
         this.edate = edate;
@@ -34,6 +34,16 @@ public class ModelCustomer {
         this.eaddr = eaddr;
         this.key = key;
         this.log = "";
+    }
+
+    public Modelcustomer(String einame, String ephoneNo, String edate, String emoney, String eaddr, String log, String key) {
+        this.einame = einame;
+        this.ephoneNo = ephoneNo;
+        this.edate = edate;
+        this.emoney = emoney;
+        this.eaddr = eaddr;
+        this.log = log;
+        this.key = key;
     }
 
     public String getKey() {

@@ -1,24 +1,24 @@
 package com.example.inventorymanagement;
 
 public class BillModel {
-    private String date,items,totalAmount,id;
+    private String id, dateBilled,items,totalAmount;
 
     public BillModel() {
     }
 
-    public BillModel(String date, String items, String totalAmount, String id) {
-        this.date = date;
+    public BillModel(String dateBilled, String items, String totalAmount, String id) {
+        this.dateBilled = dateBilled;
         this.items = items;
         this.totalAmount = totalAmount;
         this.id = id;
     }
 
-    public String getDate() {
-        return date;
+    public String getDateBilled() {
+        return dateBilled;
     }
 
-    public void setDate(String date) {
-        this.date = date;
+    public void setDateBilled(String dateBilled) {
+        this.dateBilled = dateBilled;
     }
 
     public String getItems() {
