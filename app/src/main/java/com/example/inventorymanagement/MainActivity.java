@@ -1,11 +1,17 @@
 package com.example.inventorymanagement;
 
+import android.Manifest;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.content.pm.PackageManager;
+import android.inputmethodservice.Keyboard;
+import android.os.Build;
 import android.os.Bundle;
 
+import android.os.Environment;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -25,14 +31,38 @@ import androidx.fragment.app.FragmentManager;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.navigation.NavigationView;
 
+import java.io.File;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
+
+
+import org.apache.poi.hssf.usermodel.HSSFWorkbook;
+import org.apache.poi.hssf.util.HSSFColor;
+import org.apache.poi.ss.usermodel.BorderStyle;
+import org.apache.poi.ss.usermodel.Cell;
+import org.apache.poi.ss.usermodel.CellStyle;
+
+import org.apache.poi.ss.usermodel.Font;
+
+import org.apache.poi.ss.usermodel.IndexedColors;
+
+import org.apache.poi.ss.usermodel.Row;
+import org.apache.poi.ss.usermodel.Sheet;
+
+import org.apache.poi.ss.usermodel.Workbook;
+import org.apache.poi.xssf.usermodel.IndexedColorMap;
+import org.apache.poi.xssf.usermodel.XSSFCellStyle;
+import org.apache.poi.xssf.usermodel.XSSFColor;
 
 public class MainActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
 
 
     TextView navhead, navsub,txtUsername,hometext;
 
-    public static String companyEmail, storeName,uuid, Ulevel= "";
+    public static String companyEmail, storeName,uuid, Ulevel,userID= "";
 
     View headerView;
     public static int flag = 0;
@@ -40,19 +70,34 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     public static FloatingActionButton fab;
 
     private ActionBar actionBar;
-
+    static FragmentManager fragmentManager;
 
     private  MyDbHelper dbHelper;
     private ArrayList<CompanyModel> list;
 
 
+    private ArrayList<Modelcustomer> customerlist;
+    private ArrayList<StockModel> stocklist;
+    private ArrayList<Modeltrans>  billlist;
+
 String username,userlevel;
+
+
 
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+
+        System.setProperty("org.apache.poi.javax.xml.stream.XMLInputFactory", "com.fasterxml.aalto.stax.InputFactoryImpl");
+        System.setProperty("org.apache.poi.javax.xml.stream.XMLOutputFactory", "com.fasterxml.aalto.stax.OutputFactoryImpl");
+        System.setProperty("org.apache.poi.javax.xml.stream.XMLEventFactory", "com.fasterxml.aalto.stax.EventFactoryImpl");
+
+
+
+
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
 
         setSupportActionBar(toolbar);
@@ -69,10 +114,11 @@ String username,userlevel;
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
 
+
         headerView = navigationView.getHeaderView(0);
 
 
-        FragmentManager fragmentManager = getSupportFragmentManager();
+         fragmentManager = getSupportFragmentManager();
         fragmentManager.beginTransaction().replace(R.id.content_frame, new home()).commit();
 
         sharedPref = getPreferences(Context.MODE_PRIVATE);
@@ -94,9 +140,10 @@ String username,userlevel;
         assert bundle != null;
         uuid=bundle.getString("userName");
         Ulevel=bundle.getString("userLevel");
-
+        userID=bundle.getString("id");
        // hometext =findViewById(R.id.hometext);
       //  hometext.setText(storeName);
+
 
 
 
@@ -116,18 +163,8 @@ String username,userlevel;
            //     hometext.setText(storeName);
 
                 navhead.setText(storeName);
-                navsub.setText(companyEmail);
+                navsub.setText(Ulevel);
                 txtUsername.setText(uuid);
-
-
-
-
-                if(Ulevel.equals("admin")){
-                    Toast.makeText(this, "Logged is as "+Ulevel, Toast.LENGTH_SHORT).show();
-                }else{
-                    Toast.makeText(this, "Logged is as "+Ulevel, Toast.LENGTH_SHORT).show();
-                }
-
 
 
 
@@ -177,8 +214,13 @@ String username,userlevel;
         int id = item.getItemId();
 
         if (id == R.id.action_updateinfo) {
-           // Intent i = new Intent(this, UpdateInfo.class);
-           // startActivity(i);
+            if(Ulevel.equals("user")){
+                Toast.makeText(MainActivity.this,"UnAuthorized",Toast.LENGTH_SHORT).show();
+            }else{
+
+            Intent i = new Intent(this, UpdateInfo.class);
+            startActivity(i);
+                }
             return true;
         }
         if (id == R.id.action_logout) {
@@ -192,6 +234,7 @@ String username,userlevel;
     private void signOut() {
 
                 Intent i = new Intent(MainActivity.this, Login.class);
+                i.putExtra("userLevel",Ulevel);
                 finish();
                 startActivity(i);
 
@@ -203,9 +246,12 @@ String username,userlevel;
         int id = item.getItemId();
 
         if (id == R.id.nav_inventory) {
-            Toast.makeText(MainActivity.this,"items",Toast.LENGTH_SHORT).show();
-            FragmentManager fragmentManager = getSupportFragmentManager();
-            fragmentManager.beginTransaction().replace(R.id.content_frame, new items()).commit();
+          //  Toast.makeText(MainActivity.this,"items",Toast.LENGTH_SHORT).show();
+
+                FragmentManager fragmentManager = getSupportFragmentManager();
+                fragmentManager.beginTransaction().replace(R.id.content_frame, new items()).commit();
+
+
         } else if (id == R.id.nav_home) {
             FragmentManager fragmentManager = getSupportFragmentManager();
             fragmentManager.beginTransaction().replace(R.id.content_frame, new home()).commit();
@@ -216,18 +262,39 @@ String username,userlevel;
             FragmentManager fragmentManager = getSupportFragmentManager();
             fragmentManager.beginTransaction().replace(R.id.content_frame, new customers()).commit();
         } else if (id == R.id.nav_summary) {
-           /* FragmentManager fragmentManager = getSupportFragmentManager();
-            fragmentManager.beginTransaction().replace(R.id.content_frame, new summary()).commit();*/
+            FragmentManager fragmentManager = getSupportFragmentManager();
+            fragmentManager.beginTransaction().replace(R.id.content_frame, new summary()).commit();
         }
         else if (id == R.id.nav_users) {
-           /* FragmentManager fragmentManager = getSupportFragmentManager();
-            fragmentManager.beginTransaction().replace(R.id.content_frame, new summary()).commit();*/
-            Toast.makeText(this, "Users Clicked", Toast.LENGTH_SHORT).show();
+            if(Ulevel.equals("user")){
+                Toast.makeText(MainActivity.this,"UnAuthorized",Toast.LENGTH_SHORT).show();
+            }else {
+                FragmentManager fragmentManager = getSupportFragmentManager();
+                fragmentManager.beginTransaction().replace(R.id.content_frame, new users()).commit();
+            }
         }
         else if (id == R.id.nav_expo) {
            /* FragmentManager fragmentManager = getSupportFragmentManager();
             fragmentManager.beginTransaction().replace(R.id.content_frame, new summary()).commit();*/
-            Toast.makeText(this, "Expo Clicked", Toast.LENGTH_SHORT).show();
+
+
+           /* if(Ulevel.equals("user")){
+                Toast.makeText(MainActivity.this,"UnAuthorized",Toast.LENGTH_SHORT).show();
+            }else{
+                Toast.makeText(this, "Expo Clicked", Toast.LENGTH_SHORT).show();
+            }*/
+
+            Export();
+
+        }
+        else if (id == R.id.nav_user_update) {
+            Intent i = new Intent(this, Newuser.class);
+            i.putExtra("id", userID);
+            i.putExtra("userLevel",Ulevel);
+            i.putExtra("task","update");
+
+            startActivity(i);
+
         }
 
         else if (id == R.id.nav_dev) {
@@ -237,9 +304,20 @@ String username,userlevel;
          /*   Intent i = new Intent(this, About.class);
             startActivity(i);*/
         }
+
+
+
+
+
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         drawer.closeDrawer(GravityCompat.START);
         return true;
+    }
+
+
+    public static void reloadCustomer() {
+        FragmentManager fragmentManager1 = fragmentManager;
+        fragmentManager1.beginTransaction().replace(R.id.content_frame, new customers()).commit();
     }
 
     public void homebtn(View view) {
@@ -268,7 +346,151 @@ String username,userlevel;
     }
 
     public void updatei(View view) {
-       /* Intent i = new Intent(this, UpdateInfo.class);
-        startActivity(i);*/
+        if(Ulevel.equals("user")){
+            Toast.makeText(MainActivity.this,"UnAuthorized",Toast.LENGTH_SHORT).show();
+        }else{
+         Intent i = new Intent(this, UpdateInfo.class);
+        startActivity(i);
+        }
+
+
     }
+
+
+
+
+    private void Export() {
+
+        if (Build.VERSION.SDK_INT > Build.VERSION_CODES.M) {
+            if (getApplicationContext().checkSelfPermission(Manifest.permission.WRITE_EXTERNAL_STORAGE) == PackageManager.PERMISSION_DENIED) {
+                String[] permissions = {Manifest.permission.WRITE_EXTERNAL_STORAGE};
+                requestPermissions(permissions, 1);
+            } else {
+                importData();
+            }
+        } else {
+            importData();
+        }
+    }
+
+    private void importData() {
+
+        Calendar calendar = Calendar.getInstance();
+        SimpleDateFormat format = new SimpleDateFormat("dd-MM-yyyy HH:mm");
+        String date=format.format(calendar.getTime());
+
+
+
+
+
+
+
+        billlist=dbHelper.getBills();
+
+
+
+
+
+
+
+
+
+        // File filePath = new File(Environment.getExternalStorageDirectory() + "/Demo.xls");
+        Workbook wb = new HSSFWorkbook();
+
+
+        Cell cell = null;
+
+        Sheet salesSheet = null;
+        salesSheet = wb.createSheet("Sales");
+
+
+        //Now column and row
+        Row row = salesSheet.createRow(0);
+
+
+
+        cell = row.createCell(0);
+        cell.setCellValue("ID");
+
+
+        cell = row.createCell(1);
+        cell.setCellValue("Products");
+
+
+        cell = row.createCell(2);
+        cell.setCellValue("Amount");
+
+        cell = row.createCell(3);
+        cell.setCellValue("Date");
+
+        cell = row.createCell(4);
+        cell.setCellValue("Cashier");
+
+        //column width
+        salesSheet.setColumnWidth(0, (20 * 200));
+        salesSheet.setColumnWidth(1, (50 * 200));
+        salesSheet.setColumnWidth(2, (20 * 200));
+        salesSheet.setColumnWidth(3, (30 * 200));
+        salesSheet.setColumnWidth(4, (30 * 200));
+
+
+        for (int i = 0; i < billlist.size(); i++) {
+            Row row1 = salesSheet.createRow(i + 1);
+
+            cell = row1.createCell(0);
+            cell.setCellValue(billlist.get(i).getKey());
+
+            cell = row1.createCell(1);
+            cell.setCellValue((billlist.get(i).getGitems()));
+            //  cell.setCellStyle(cellStyle);
+
+            cell = row1.createCell(2);
+            cell.setCellValue(billlist.get(i).getGtotamt());
+
+            cell = row1.createCell(4);
+            cell.setCellValue((billlist.get(i).getGdate()));
+            //  cell.setCellStyle(cellStyle);
+
+            cell = row1.createCell(4);
+            cell.setCellValue(billlist.get(i).getBiller());
+
+
+            salesSheet.setColumnWidth(0, (20 * 200));
+            salesSheet.setColumnWidth(1, (50 * 200));
+            salesSheet.setColumnWidth(2, (20 * 200));
+            salesSheet.setColumnWidth(3, (30 * 200));
+            salesSheet.setColumnWidth(4, (30 * 200));
+
+        }
+
+        String folderName = storeName+" Database Backup Excel";
+        String fileName = "Backup " + date+ ".xls";
+        String path = Environment.getExternalStorageDirectory() + File.separator + folderName + File.separator + fileName;
+
+        File file = new File(Environment.getExternalStorageDirectory() + File.separator + folderName);
+        if (!file.exists()) {
+            file.mkdirs();
+        }
+
+        FileOutputStream outputStream = null;
+
+        try {
+            outputStream = new FileOutputStream(path);
+            wb.write(outputStream);
+            // ShareViaEmail(file.getParentFile().getName(),file.getName());
+            Toast.makeText(getApplicationContext(), "Excel Created in " + path, Toast.LENGTH_SHORT).show();
+        } catch (IOException e) {
+            e.printStackTrace();
+
+            Toast.makeText(getApplicationContext(), "Not OK", Toast.LENGTH_LONG).show();
+            try {
+                outputStream.close();
+            } catch (Exception ex) {
+                ex.printStackTrace();
+
+            }
+        }
+    }
+
 }

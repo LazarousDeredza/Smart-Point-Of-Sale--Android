@@ -143,13 +143,14 @@ public class transactions extends Fragment implements SearchView.OnQueryTextList
                     list.get(i).getGitems(),
                     list.get(i).getGtotamt(),
                     list.get(i).getGtranid(),
-                    list.get(i).getKey());
+                    list.get(i).getKey(),
+                    list.get(i).getBiller());
             System.out.println(list.get(i).getGdate());
             models.add(model);
         }
 
-        String TransDate=models.get(0).getGdate();
-        System.out.println(" Date added  =========" +TransDate);
+    //    String TransDate=models.get(0).getGdate();
+      //  System.out.println(" Date added  =========" +TransDate);
 
 
         System.out.println("model length = "+models.size());

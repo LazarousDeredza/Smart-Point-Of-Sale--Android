@@ -1,7 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
 
-    <group android:checkableBehavior="single">
+    <group android:checkableBehavior="single"
+        android:id="@+id/menuu">
         <item
             android:id="@+id/nav_home"
             android:icon="@drawable/home"
@@ -9,7 +10,7 @@
         <item
             android:id="@+id/nav_inventory"
             android:icon="@drawable/inventory"
-            android:title="Items" />
+            android:title="Inventory" />
         <item
             android:id="@+id/nav_transaction"
             android:icon="@drawable/transaction"
@@ -22,6 +23,10 @@
             android:id="@+id/nav_users"
             android:icon="@drawable/seller"
             android:title="Users" />
+        <item
+            android:id="@+id/nav_user_update"
+            android:icon="@drawable/ic_baseline_person"
+            android:title="Update Profile" />
         <item
             android:id="@+id/nav_expo"
             android:icon="@drawable/editicon"

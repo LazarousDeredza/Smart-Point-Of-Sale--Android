@@ -27,7 +27,7 @@ public class MyAdapterTrans extends RecyclerView.Adapter<MyViewHolderTrans> impl
 
     String uid;
     ArrayList<Modeltrans> models, filterList;
-
+    String level="";
     MyDbHelper dbHelper;
     CustomFilterTrans filter;
 
@@ -44,6 +44,7 @@ public class MyAdapterTrans extends RecyclerView.Adapter<MyViewHolderTrans> impl
     public MyViewHolderTrans onCreateViewHolder(ViewGroup parent, int viewType) {
 
         View v = LayoutInflater.from(c).inflate(R.layout.transcard, parent, false);
+        dbHelper = new MyDbHelper(c);
         return new MyViewHolderTrans(v);
     }
 
@@ -57,12 +58,16 @@ public class MyAdapterTrans extends RecyclerView.Adapter<MyViewHolderTrans> impl
 
        // holder.cp.setText(models.get(position).getDateUpdated());
         holder.trans.setText(models.get(position).getGtranid());
-        holder.date.setText(models.get(position).getGdate());
+      //  bill.getDateBilled().substring(0,2)+"/"+bill.getDateBilled().substring(2,4)+"/"+bill.getDateBilled().substring(4,8)
+        holder.date.setText(models.get(position).getGdate().substring(0,2)+"/"+
+                models.get(position).getGdate().substring(2,4)+"/"+
+                models.get(position).getGdate().substring(4,8) );
         holder.money.setText(models.get(position).getGtotamt());
-        /*holder.custname.setText(models.get(position).getGpt());*/
+        holder.custname.setText(models.get(position).getBiller());
 
 
         dbHelper=new MyDbHelper(c.getApplicationContext());
+        level=dbHelper.getLogged("1").getLevel();
 
         billModel=dbHelper.getBill(models.get(position).getKey());
 
@@ -83,59 +88,60 @@ public class MyAdapterTrans extends RecyclerView.Adapter<MyViewHolderTrans> impl
             public void onClick(View v) {
 
                 final String item = models.get(position).getGtranid();
+                if (level.equals("user")) {
+                    Toast.makeText(c, "UnAuthorized", Toast.LENGTH_SHORT).show();
+                } else {
+                    AlertDialog.Builder alert = new AlertDialog.Builder(c);
+                    alert.setTitle("Alert!!");
+                    alert.setMessage("Are you sure to delete this transaction?");
+                    alert.setPositiveButton("Yes", new DialogInterface.OnClickListener() {
 
-                        AlertDialog.Builder alert = new AlertDialog.Builder(c);
-                        alert.setTitle("Alert!!");
-                        alert.setMessage("Are you sure to delete this transaction?");
-                        alert.setPositiveButton("Yes", new DialogInterface.OnClickListener() {
-
-                            @Override
-                            public void onClick(DialogInterface dialog, int which) {
-
-
-                              /*  dataSnapshot.getRef().removeValue();*/
-
-
-                                dbHelper.deleteBill(models.get(position).getKey());
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
 
 
-                                dialog.dismiss();
-                                models.remove(position);
-                                notifyItemRemoved(position);
-                                notifyItemRangeChanged(position, models.size());
-
-                                // log
+                            /*  dataSnapshot.getRef().removeValue();*/
 
 
-
-                                Calendar calendar = Calendar.getInstance();
-                                SimpleDateFormat format = new SimpleDateFormat("dd-MM-yyyy");
-                                SimpleDateFormat fm = new SimpleDateFormat("HH:mm");
-                               String log= format.format(calendar.getTime()) + "\n["
-                                                    + fm.format(calendar.getTime()) + "] " + item
-                                                    + " Transaction Deleted\n\n" ;
-
-                                String DCreated=format.format(calendar.getTime()) + " " + fm.format(calendar.getTime()) ;
-
-                                long id2=dbHelper.insertToLog(
-                                        ""+log,
-                                        ""+DCreated);
-
-                                Toast.makeText(c, item + " has been removed succesfully.", Toast.LENGTH_SHORT).show();
-                            }
-                        });
-                        alert.setNegativeButton("NO", new DialogInterface.OnClickListener() {
-
-                            @Override
-                            public void onClick(DialogInterface dialog, int which) {
-                                dialog.dismiss();
-                            }
-                        });
-
-                        alert.show();
-                    }
+                            dbHelper.deleteBill(models.get(position).getKey());
 
 
+                            dialog.dismiss();
+                            models.remove(position);
+                            notifyItemRemoved(position);
+                            notifyItemRangeChanged(position, models.size());
+
+                            // log
+
+
+                            Calendar calendar = Calendar.getInstance();
+                            SimpleDateFormat format = new SimpleDateFormat("dd-MM-yyyy");
+                            SimpleDateFormat fm = new SimpleDateFormat("HH:mm");
+                            String log = format.format(calendar.getTime()) + "\n["
+                                    + fm.format(calendar.getTime()) + "] " + item
+                                    + " Transaction Deleted\n\n";
+
+                            String DCreated = format.format(calendar.getTime()) + " " + fm.format(calendar.getTime());
+
+                            long id2 = dbHelper.insertToLog(
+                                    "" + log,
+                                    "" + DCreated);
+
+                            Toast.makeText(c, item + " has been removed succesfully.", Toast.LENGTH_SHORT).show();
+                        }
+                    });
+                    alert.setNegativeButton("NO", new DialogInterface.OnClickListener() {
+
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+                            dialog.dismiss();
+                        }
+                    });
+
+                    alert.show();
+                }
+
+            }
                 });
 
 

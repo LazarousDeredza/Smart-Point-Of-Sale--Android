@@ -1,5 +1,6 @@
 package com.example.inventorymanagement;
 
+import static android.content.Intent.getIntent;
 import static com.example.inventorymanagement.MainActivity.fab;
 
 import android.content.Intent;
@@ -11,6 +12,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.SearchView;
+import android.widget.Toast;
 
 import androidx.annotation.Nullable;
 import androidx.core.view.MenuItemCompat;
@@ -18,13 +20,14 @@ import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import java.net.URISyntaxException;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
 
 public class customers extends Fragment implements SearchView.OnQueryTextListener {
     View v;
-    String uid;
+    String level;
 
     MyAdapterCustomer adapter;
     private RecyclerView rv;
@@ -58,17 +61,27 @@ public class customers extends Fragment implements SearchView.OnQueryTextListene
     @Override
     public void onResume() {
         super.onResume();
-        fab.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                // Snackbar.make(view, "Customer Fab", Snackbar.LENGTH_LONG)
-                // .setAction("Action", null).show();
-                Intent i = new Intent(getContext(), Newcustomer.class);
-                startActivity(i);
-            }
-        });
-
         dbHelper=new MyDbHelper(getContext());
+        level=dbHelper.getLogged("1").getLevel();
+
+
+            fab.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    // Snackbar.make(view, "Customer Fab", Snackbar.LENGTH_LONG)
+                    // .setAction("Action", null).show();
+                    if(level.equals("user")){
+                        Toast.makeText(getContext(),"UnAuthorized",Toast.LENGTH_SHORT).show();
+                    }else {
+
+                        Intent i = new Intent(getContext(), Newcustomer.class);
+                        startActivity(i);
+                    }
+                }
+            });
+
+
+
 
         fab.show();
         // ADAPTER

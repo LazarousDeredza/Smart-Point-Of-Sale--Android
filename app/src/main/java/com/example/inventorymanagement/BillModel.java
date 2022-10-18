@@ -1,16 +1,19 @@
 package com.example.inventorymanagement;
 
 public class BillModel {
-    private String id, dateBilled,items,totalAmount;
+    private String id, dateBilled,items,totalAmount,transID,biller;
 
     public BillModel() {
     }
 
-    public BillModel(String dateBilled, String items, String totalAmount, String id) {
+    public BillModel(String dateBilled, String items, String totalAmount, String id, String transID, String biller) {
         this.dateBilled = dateBilled;
         this.items = items;
         this.totalAmount = totalAmount;
+
         this.id = id;
+        this.transID = transID;
+        this.biller = biller;
     }
 
     public String getDateBilled() {
@@ -43,5 +46,21 @@ public class BillModel {
 
     public void setId(String id) {
         this.id = id;
+    }
+
+    public String getTransID() {
+        return transID;
+    }
+
+    public void setTransID(String transID) {
+        this.transID = transID;
+    }
+
+    public String getBiller() {
+        return biller;
+    }
+
+    public void setBiller(String biller) {
+        this.biller = biller;
     }
 }

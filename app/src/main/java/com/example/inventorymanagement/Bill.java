@@ -3,9 +3,12 @@ package com.example.inventorymanagement;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
+import android.widget.Button;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 
@@ -15,11 +18,12 @@ import java.util.StringTokenizer;
 
 public class Bill extends AppCompatActivity {
 
-    TextView ph1, ph2, storename, storeaddr, transid, date,  totamt, name;
+    TextView ph1, ph2, storename, storeaddr, transid, date,  totamt, name,biller;
     TextView medname[], unit[], batch[], qty[],  exp[], amt[];
     String ids[];
 
 
+    Button btnPrint;
     MyDbHelper dbHelper;
 
 
@@ -44,6 +48,8 @@ public class Bill extends AppCompatActivity {
         totamt = (TextView) findViewById(R.id.totamt);
         name = (TextView) findViewById(R.id.name);
 
+        biller=findViewById(R.id.ptname);
+        btnPrint=findViewById(R.id.btnPrint);
 
         dbHelper=new MyDbHelper(this);
 
@@ -97,8 +103,10 @@ public class Bill extends AppCompatActivity {
 
 
                 totamt.setText(bill.getTotalAmount());
-                date.setText(DateCreated);
+                date.setText(bill.getDateBilled().substring(0,2)+"/"+bill.getDateBilled().substring(2,4)+"/"+bill.getDateBilled().substring(4,8));
                 transid.setText(bill.getId());
+                 biller.setText(bill.getBiller());
+
                 String items =bill.getItems();
                 StringTokenizer st = new StringTokenizer(items, "®");
                 int k = -1;
@@ -116,6 +124,14 @@ public class Bill extends AppCompatActivity {
                         amt[k].setText(sti.nextToken());
                     }
                 }
+
+
+        btnPrint.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Toast.makeText(Bill.this, "Error: Printer not Configured", Toast.LENGTH_SHORT).show();
+            }
+        });
 
     }
 

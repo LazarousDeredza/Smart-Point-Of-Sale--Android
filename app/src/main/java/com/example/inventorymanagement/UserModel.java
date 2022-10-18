@@ -13,12 +13,15 @@ public class UserModel {
     private String Email;
     private String DateCreated;
     private String DateUpadted;
+    private String log;
 
 
     public UserModel() {
     }
 
-    public UserModel(String id, String firstName, String lastName, String userName, String password, String address, String phone, String userLevel, String email, String dateCreated, String dateUpadted) {
+    public UserModel(String id, String firstName, String lastName, String userName,
+                     String password, String address, String phone, String userLevel,
+                     String email, String dateCreated, String dateUpadted, String log) {
         this.id = id;
         this.firstName = firstName;
         this.lastName = lastName;
@@ -30,6 +33,7 @@ public class UserModel {
         Email = email;
         DateCreated = dateCreated;
         DateUpadted = dateUpadted;
+        this.log = log;
     }
 
     public String getUserName() {
@@ -118,5 +122,13 @@ public class UserModel {
 
     public void setDateUpadted(String dateUpadted) {
         DateUpadted = dateUpadted;
+    }
+
+    public String getLog() {
+        return log;
+    }
+
+    public void setLog(String log) {
+        this.log = log;
     }
 }

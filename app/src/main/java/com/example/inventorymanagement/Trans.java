@@ -106,10 +106,10 @@ public class Trans extends AppCompatActivity implements View.OnClickListener {
                             public void onClick(DialogInterface dialog, int which) {
 
                                 // Updating customerdetail
-                               /* if (set) {
+                                if (set) {
                                     updateCust(autoCustAdapter.detcust()[0], due.getText().toString(),
                                             autoCustAdapter.detcust()[1]);
-                                }*/
+                                }
 
                                 int size = listmodel.size();
                                 String gdate = edate.getText().toString().trim();
@@ -125,16 +125,19 @@ public class Trans extends AppCompatActivity implements View.OnClickListener {
                                             + listmodel.get(i).getBatch() + "©" + listmodel.get(i).getQty() + "©"
                                             + amt  + "©" + listmodel.get(i).getAmount();
 
-                                    if (items.equals(""))
+                                    if (items.equals("")){
                                         items = items + itemlist[i];
-                                    else
+                                    }
+                                    else{
                                         items = items + "®" + itemlist[i];
+                                    }
 
                                     itemcnt += Integer.parseInt(listmodel.get(i).getQty());
 
                                     // updating item quantity
-                                    updateQty(listmodel.get(i).getKey(), listmodel.get(i).getQty(),
-                                            listmodel.get(i).getOrgqty());
+                                   /* updateQty(listmodel.get(i).getKey(), listmodel.get(i).getQty(),
+                                            listmodel.get(i).getOrgqty());*/
+                                    updateQty(listmodel.get(i).getKey(), listmodel.get(i).getQty());
                                 }
 
                                 final String gtotamt = totamt.getText().toString();
@@ -142,17 +145,20 @@ public class Trans extends AppCompatActivity implements View.OnClickListener {
                                 // save to Database
 
 
-                                String dateCreated="";
+                                String dateCreated=edate.getText().toString().replaceAll("-","").trim();
 
 
-                                Calendar cl = Calendar.getInstance();
+
+                              /*  Calendar cl = Calendar.getInstance();
                                 SimpleDateFormat ft = new SimpleDateFormat("dd-MM-yyyy");
                                 SimpleDateFormat fn = new SimpleDateFormat("HH:mm");
-                                dateCreated=ft.format(cl.getTime()) + " " + fn.format(cl.getTime()) ;
+                                dateCreated=ft.format(cl.getTime()) + " " + fn.format(cl.getTime()) ;*/
 
                                 // Log.e("dateeee",dateCreated);
 
-                                String k = String.valueOf(dbHelper.insertToBill(items, dateCreated, gtotamt));
+                                String biller=dbHelper.getUser(dbHelper.getLogged("1").getUuid()).getFirstName()+
+                                        " "+dbHelper.getUser(dbHelper.getLogged("1").getUuid()).getLastName();
+                                String k = String.valueOf(dbHelper.insertToBill(items, dateCreated, gtotamt,biller));
 
                                BillModel m=dbHelper.getBill(k);
                                // Log.e("billDetails","ID= "+m.getId()+" Date = "+m.getDateBilled()+" items= "+m.getItems()+" Tot = "+m.getTotalAmount());
@@ -168,8 +174,8 @@ public class Trans extends AppCompatActivity implements View.OnClickListener {
                                 SummaryModel model = dbHelper.getSummary("1");
 
                                 Log.e("summary","Amount =" +model.getAmount()+" MonthAmount= "+model.getMonthAmount()+"" +
-                                        " Month= "+model.getMonth()+" Month Kound= "+model.getMonthCount()+" Kound ="+ model.getCount()+" "+"" +
-                                        " Trans = "+model.getTrans()+" Date = "+model.getDate());
+                                        " Month= "+model.getMonth()+" Month Count= "+model.getMonthCount()+" Count ="+ model.getCount()+" "+"" +
+                                        " Trans ID= "+model.getTrans()+" Date = "+model.getDate());
 
 
 
@@ -207,9 +213,9 @@ public class Trans extends AppCompatActivity implements View.OnClickListener {
                                         dbHelper.UpdateSummaryMonthMonthCountAndMonthAmount(fm.format(c.getTime()), icount + "", amt + "");
                                     }
 
-
+                                    //TODO
                                     //dbi.child("Bill").child(k).child("gtranid").setValue(tcount + "");
-
+                                    dbHelper.updateBillId(k,tcount + "");
                                     dbHelper.updateSummaryId(tcount + "", "1");
 
 
@@ -232,14 +238,34 @@ public class Trans extends AppCompatActivity implements View.OnClickListener {
 
                                 // log
 
-                                                Calendar calendar = Calendar.getInstance();
-                                                SimpleDateFormat format = new SimpleDateFormat("dd-MM-yyyy");
-                                                SimpleDateFormat fm = new SimpleDateFormat("HH:mm");
+                                String l=dbHelper.getLog("1");
+                                String date = l.substring(0, 10);
+                                Calendar calendar = Calendar.getInstance();
+                                SimpleDateFormat format = new SimpleDateFormat("dd-MM-yyyy");
+                                SimpleDateFormat fm = new SimpleDateFormat("HH:mm");
 
-                                                String DCreated=format.format(calendar.getTime()) + " " + fm.format(calendar.getTime()) ;
+                                String log="";
+                                String DCreated=format.format(calendar.getTime()) + " " + fm.format(calendar.getTime()) ;
+                                if (format.format(calendar.getTime()).equals(date)) {
+                                    l = l.substring(11);
+                                    log = format.format(calendar.getTime()) + "\n["
+                                            + fm.format(calendar.getTime())
+                                            + "] Transaction. Amount:" + gtotamt + "\n" + l;
+                                    long id2 = dbHelper.insertToLog(
+                                            "" + log,
+                                            "" + DCreated);
+                                }else{
+                                     log=format.format(calendar.getTime()) + "\n["
+                                             + fm.format(calendar.getTime())
+                                             + "] Transaction. Amount:" + gtotamt + "\n\n" + l;
+                                    long id2 = dbHelper.insertToLog(
+                                            "" + log,
+                                            "" + DCreated);
+                                }
 
 
 
+/*
                                 String log=format.format(calendar.getTime()) + "\n["
                                         + fm.format(calendar.getTime()) + "] Transaction. Amount: " + gtotamt + "\n";
 
@@ -247,7 +273,7 @@ public class Trans extends AppCompatActivity implements View.OnClickListener {
 
                                     long id2=dbHelper.insertToLog(
                                         ""+log,
-                                        ""+DCreated);
+                                        ""+DCreated);*/
 
 
 
@@ -350,6 +376,8 @@ public class Trans extends AppCompatActivity implements View.OnClickListener {
         Utility.setListViewHeightBasedOnChildren(lv);
     }
 
+
+
     // Functions
 
     public boolean validate() {
@@ -419,7 +447,7 @@ public class Trans extends AppCompatActivity implements View.OnClickListener {
             final String barcode=adapter.det()[6];
             final String match = item + " (" +barcode + ") "+unitSize;
 
-            Log.e("tag",item +" "+batch+" "+expdate+" "+productid+" "+quanity+" "+unitSize+" "+amount);
+
 
             if (!item.equals("")  && match.equals(act.getText().toString())) {
 
@@ -444,6 +472,8 @@ public class Trans extends AppCompatActivity implements View.OnClickListener {
                                 totamount = totamount + Double.valueOf(amount);
                                 totamount = roundOff(totamount);
                                 ListModel list = new ListModel(item, qt, amount, batch, expdate, productid, quanity, unitSize);
+                                Log.e("tag","item :"+list.getMed() +" batsh :"+list.getBatch()+"  Esp Date :"+list.getExpdate()+
+                                        " ID : "+list.getKey()+" Quantity :"+list.getQty()+" Original quantity :"+list.getOrgqty()+" Unit sise :"+list.getUnit()+" Amount :"+list.getAmount());
                                 listmodel.add(list);
                                 listadapter.notifyDataSetChanged();
                                 act.setText("");
@@ -497,8 +527,10 @@ public class Trans extends AppCompatActivity implements View.OnClickListener {
         listadapter.notifyDataSetChanged();
     }
 
-    public void updateQty(String key, String qty, String orgqty) {
-        int oqt = Integer.parseInt(orgqty);
+    public void updateQty(String key, String qty) {
+        int oqt = Integer.parseInt(dbHelper.getQuantity(key));
+
+
         int qt = Integer.parseInt(qty);
         oqt = oqt - qt;
         dbHelper.deductStock(key, String.valueOf(oqt));
@@ -506,7 +538,9 @@ public class Trans extends AppCompatActivity implements View.OnClickListener {
         adapter.notifyDataSetChanged();
     }
 
-  /*  public void updateCust(String key, String amt, String orgamt) {
+
+ //TODO
+    public void updateCust(String key, String amt, String orgamt) {
 
         double org = roundOff(Double.valueOf(orgamt));
         double am = roundOff(Double.valueOf(amt));
@@ -517,29 +551,24 @@ public class Trans extends AppCompatActivity implements View.OnClickListener {
         final double balance = org;
         final double paid = am;
 
-        dbc.child("Person").child(key).child("emoney").setValue(String.valueOf(org));
         Calendar c = Calendar.getInstance();
         SimpleDateFormat df = new SimpleDateFormat("dd-MM-yyyy");
         String formattedDate = df.format(c.getTime());
-        dbc.child("Person").child(key).child("edate").setValue(formattedDate);
 
-        dbc.child("Person").child(key).child("log").addListenerForSingleValueEvent(new ValueEventListener() {
-            @Override
-            public void onDataChange(final DataSnapshot dataSnapshot) {
-                String value = (String) dataSnapshot.getValue();
 
-                Calendar calendar = Calendar.getInstance();
-                SimpleDateFormat format = new SimpleDateFormat("dd-MM-yyyy HH:mm");
-                dbc.child("Person").child(k).child("log").setValue(value + "[" + format.format(calendar.getTime())
-                        + "] Transaction. Total:" + tot + " Paid:" + paid + " Balance:" + balance + "\n");
-            }
 
-            @Override
-            public void onCancelled(DatabaseError error) {
-            }
-        });
 
-    }*/
+        Calendar calendar = Calendar.getInstance();
+        SimpleDateFormat format = new SimpleDateFormat("dd-MM-yyyy HH:mm");
+
+        String PrevLog= dbHelper.getLog(key);
+        String log ="[" + format.format(calendar.getTime())
+                + "] Transaction. Total:" + tot + " Paid:" + paid + " Balance:" + balance + "\n";
+
+        dbHelper.updateCustomer(key,String.valueOf(org),formattedDate,PrevLog.concat(log));
+
+
+    }
 
     public double roundOff(double d) {
         d = Math.round(d * 100.0);

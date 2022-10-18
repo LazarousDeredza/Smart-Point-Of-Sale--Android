@@ -147,26 +147,28 @@
             android:paddingTop="1dp"
             android:paddingBottom="1dp"
             android:paddingRight="3dp"
-            android:weightSum="8"
             android:orientation="horizontal">
             <TextView
-                android:layout_width="0dp"
+
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_weight="2"
-                android:text="Teller: "
+                android:text="Teller :"
+                android:layout_weight="1"
                 android:textStyle="normal|italic"
                 android:textSize="12sp"
-                android:paddingLeft="4dp" />
+                android:paddingLeft="4dp"
+
+               />
             <TextView
-                android:layout_width="0dp"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text=""
                 android:id="@+id/ptname"
-                android:maxWidth="200dp"
-                android:paddingRight="10dp"
-                android:layout_weight="4"
                 android:textColor="#000000"
-                android:textSize="12sp" />
+                android:layout_weight="1"
+                android:textSize="12sp"
+
+                 />
 
 
 
@@ -1251,19 +1253,38 @@
                     android:id="@+id/totamt" />
             </LinearLayout>
             <RelativeLayout
+                android:layout_gravity="center"
+                android:gravity="bottom|center"
+
                 android:layout_width="match_parent"
                 android:layout_height="match_parent">
-                <TextView
+
+                <LinearLayout
+                    android:layout_above="@+id/name"
+                    android:layout_gravity="center"
+                    android:gravity="center"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="(Authorized Signatory)"
-                    android:textColor="#363636"
-                    android:textSize="10dp"
+                    android:orientation="horizontal">
+
+                    <Button
+                        android:id="@+id/btnPrint"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Print" />
+                </LinearLayout>
+
+                <TextView
+                    android:id="@+id/abc"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
                     android:layout_alignParentBottom="true"
-                    android:textAlignment="textEnd"
-                    android:paddingBottom="2dp"
                     android:paddingRight="2dp"
-                    android:id="@+id/abc"/>
+                    android:paddingBottom="2dp"
+                    android:text="(Authorized Signatory)"
+                    android:textAlignment="textEnd"
+                    android:textColor="#363636"
+                    android:textSize="10dp" />
                 <TextView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"

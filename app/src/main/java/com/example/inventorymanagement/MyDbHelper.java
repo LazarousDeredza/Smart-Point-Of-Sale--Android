@@ -28,6 +28,7 @@ public class MyDbHelper extends SQLiteOpenHelper {
         db.execSQL(Constants.CREATE_TABLE5);
         db.execSQL(Constants.CREATE_TABLE6);
         db.execSQL(Constants.CREATE_TABLE7);
+        db.execSQL(Constants.CREATE_TABLE8);
 
     }
 
@@ -43,6 +44,7 @@ public class MyDbHelper extends SQLiteOpenHelper {
         db.execSQL("DROP TABLE IF EXISTS " + Constants.Bill);
         db.execSQL("DROP TABLE IF EXISTS " + Constants.Summary);
         db.execSQL("DROP TABLE IF EXISTS " + Constants.Customer);
+        db.execSQL("DROP TABLE IF EXISTS " + Constants.Logged);
         //Create again
         onCreate(db);
 
@@ -60,6 +62,7 @@ public class MyDbHelper extends SQLiteOpenHelper {
         db.execSQL("DROP TABLE IF EXISTS " + Constants.Bill);
         db.execSQL("DROP TABLE IF EXISTS " + Constants.Summary);
         db.execSQL("DROP TABLE IF EXISTS " + Constants.Customer);
+        db.execSQL("DROP TABLE IF EXISTS " + Constants.Logged);
 
         onCreate(db);
         db.close();
@@ -70,7 +73,7 @@ public class MyDbHelper extends SQLiteOpenHelper {
 
     public long insertToCompany(String Owner, String StoreName, String Phone
             , String Whatsapp, String Address, String Email, String DateAdded
-            , String DateUpdated) {
+            , String DateUpdated, String info) {
 
         //get Writable database
         SQLiteDatabase db = this.getWritableDatabase();
@@ -89,6 +92,7 @@ public class MyDbHelper extends SQLiteOpenHelper {
         values.put(Constants.C_EMAIL, Email);
         values.put(Constants.C_ADDED, DateAdded);
         values.put(Constants.C_UPDATED, DateUpdated);
+        values.put(Constants.desc, info);
 
 
         //insert row , it will return record id of saved record
@@ -103,7 +107,7 @@ public class MyDbHelper extends SQLiteOpenHelper {
   //INSERT INTO USERS
    public long insertToUsers(String firstName, String lastName,String username, String password, String Phone
             , String userLevel, String Address, String Email, String DateAdded
-            , String DateUpdated) {
+            , String DateUpdated,String log) {
 
         //get Writable database
         SQLiteDatabase db = this.getWritableDatabase();
@@ -121,6 +125,7 @@ public class MyDbHelper extends SQLiteOpenHelper {
         values.put(Constants.C_PHONE, Phone);
         values.put(Constants.USERLEVEL, userLevel);
         values.put(Constants.C_ADDRESS, Address);
+       values.put(Constants.userLog, log);
         values.put(Constants.C_EMAIL, Email);
         values.put(Constants.C_ADDED, DateAdded);
         values.put(Constants.C_UPDATED, DateUpdated);
@@ -264,7 +269,7 @@ public class MyDbHelper extends SQLiteOpenHelper {
 
 
     //INSERT INTO LOGS
-    public long insertToBill(String items,String dateAdded,String total) {
+    public long insertToBill(String items, String dateAdded, String total, String biller) {
 
         //get Writable database
         SQLiteDatabase db = this.getWritableDatabase();
@@ -278,7 +283,7 @@ public class MyDbHelper extends SQLiteOpenHelper {
         values.put(Constants.items, items);
         values.put(Constants.C_ADDED, dateAdded);
         values.put(Constants.totalAmount, total);
-
+        values.put(Constants.biller, biller);
 
         Log.e("Bill added",dateAdded);
         //insert row , it will return record id of saved record
@@ -312,9 +317,9 @@ public class MyDbHelper extends SQLiteOpenHelper {
                         ""+cursor.getString(cursor.getColumnIndex(Constants.C_WHATSAPP)),
                         ""+cursor.getString(cursor.getColumnIndex(Constants.C_EMAIL)),
                         ""+cursor.getString(cursor.getColumnIndex(Constants.C_ADDED)),
-                        ""+cursor.getString(cursor.getColumnIndex(Constants.C_UPDATED))
-
-                );
+                        ""+cursor.getString(cursor.getColumnIndex(Constants.C_UPDATED)),
+                        ""+cursor.getString(cursor.getColumnIndex(Constants.desc))
+                        );
 
                 //add record to list
                 recordsList.add(companyModel);
@@ -491,8 +496,9 @@ public class MyDbHelper extends SQLiteOpenHelper {
                         ""+cursor.getString(cursor.getColumnIndex(Constants.C_PHONE)),
                         ""+cursor.getString(cursor.getColumnIndex(Constants.USERLEVEL)),
                         ""+cursor.getString(cursor.getColumnIndex(Constants.C_EMAIL)),
-                        ""+cursor.getString(cursor.getColumnIndex(Constants.C_ADDED)),
-                        ""+cursor.getString(cursor.getColumnIndex(Constants.C_UPDATED))
+                         ""+cursor.getString(cursor.getColumnIndex(Constants.C_ADDED)),
+                        ""+cursor.getString(cursor.getColumnIndex(Constants.C_UPDATED)),
+                        ""+cursor.getString(cursor.getColumnIndex(Constants.userLog))
 
                 );
 
@@ -532,8 +538,9 @@ public class MyDbHelper extends SQLiteOpenHelper {
                         ""+cursor.getString(cursor.getColumnIndex(Constants.C_PHONE)),
                         ""+cursor.getString(cursor.getColumnIndex(Constants.USERLEVEL)),
                         ""+cursor.getString(cursor.getColumnIndex(Constants.C_EMAIL)),
-                        ""+cursor.getString(cursor.getColumnIndex(Constants.C_ADDED)),
-                        ""+cursor.getString(cursor.getColumnIndex(Constants.C_UPDATED))
+                         ""+cursor.getString(cursor.getColumnIndex(Constants.C_ADDED)),
+                        ""+cursor.getString(cursor.getColumnIndex(Constants.C_UPDATED)),
+                        ""+cursor.getString(cursor.getColumnIndex(Constants.userLog))
 
                 );
 
@@ -573,8 +580,8 @@ public class MyDbHelper extends SQLiteOpenHelper {
                         ""+cursor.getString(cursor.getColumnIndex(Constants.C_WHATSAPP)),
                         ""+cursor.getString(cursor.getColumnIndex(Constants.C_EMAIL)),
                         ""+cursor.getString(cursor.getColumnIndex(Constants.C_ADDED)),
-                        ""+cursor.getString(cursor.getColumnIndex(Constants.C_UPDATED))
-                );
+                        ""+cursor.getString(cursor.getColumnIndex(Constants.C_UPDATED)),
+                        ""+cursor.getString(cursor.getColumnIndex(Constants.desc)));
 
                 //add record to list
                 st=companyModel;
@@ -607,8 +614,9 @@ public class MyDbHelper extends SQLiteOpenHelper {
                         ""+ cursor.getInt(cursor.getColumnIndex(Constants.C_ADDED)),
                         ""+cursor.getString(cursor.getColumnIndex(Constants.items)),
                         ""+cursor.getString(cursor.getColumnIndex(Constants.totalAmount)),
-                        ""+cursor.getString(cursor.getColumnIndex(Constants.C_ID))
-                );
+                        ""+cursor.getString(cursor.getColumnIndex(Constants.C_ID)),
+                        ""+cursor.getString(cursor.getColumnIndex(Constants.trans)),
+                        ""+cursor.getString(cursor.getColumnIndex(Constants.biller)));
 
                 //add record to list
                 st=billModel;
@@ -658,7 +666,7 @@ public class MyDbHelper extends SQLiteOpenHelper {
     }
 
     //INSERT INTO STOCK
-    public void updateBillId(String k, String id) {
+    public void updateBillId(String id, String TransId) {
 
         //get Writable database
         SQLiteDatabase db = this.getWritableDatabase();
@@ -669,10 +677,10 @@ public class MyDbHelper extends SQLiteOpenHelper {
 
         //insertData
 
-        values.put(Constants.C_ID, id      );
+        values.put(Constants.trans, TransId );
 
         //insert row , it will return record id of saved record
-        db.update(Constants.Bill, values,Constants.C_ID +" = ?",new String[]{k});
+        db.update(Constants.Bill, values,Constants.C_ID +" = ?",new String[]{id});
 
         //close connection
         db.close();
@@ -751,6 +759,7 @@ public class MyDbHelper extends SQLiteOpenHelper {
 
         values.put(Constants.count, count  );
         values.put(Constants.amount, amount );
+
 
         //insert row , it will return record id of saved record
         db.update(Constants.Summary, values,Constants.C_ID +" = ?",new String[]{"1"});
@@ -896,7 +905,7 @@ public class MyDbHelper extends SQLiteOpenHelper {
         if(cursor.moveToFirst()){
             do {
                 @SuppressLint("Range") Modelcustomer modelcustomer=new Modelcustomer(
-                        ""+ cursor.getInt(cursor.getColumnIndex(Constants.name)),
+                        ""+ cursor.getString(cursor.getColumnIndex(Constants.name)),
                         ""+cursor.getString(cursor.getColumnIndex(Constants.C_PHONE)),
                         ""+cursor.getString(cursor.getColumnIndex(Constants.C_ADDED)),
                         ""+cursor.getString(cursor.getColumnIndex(Constants.amount)),
@@ -1023,9 +1032,9 @@ public class MyDbHelper extends SQLiteOpenHelper {
                         ""+cursor.getString(cursor.getColumnIndex(Constants.items)),
                         ""+cursor.getString(cursor.getColumnIndex(Constants.totalAmount)),
                         ""+cursor.getString(cursor.getColumnIndex(Constants.C_ID)),
-                        ""+cursor.getString(cursor.getColumnIndex(Constants.C_ID))
-
-                );
+                        ""+cursor.getString(cursor.getColumnIndex(Constants.C_ID)),
+                        ""+cursor.getString(cursor.getColumnIndex(Constants.biller))
+                        );
 
                 //add record to list
                 recordsList.add(modelt);
@@ -1038,5 +1047,284 @@ public class MyDbHelper extends SQLiteOpenHelper {
 
         //return the list
         return recordsList;
+    }
+
+
+    public String getQuantity(String id) {
+
+        //order by query will allow to sort data e.g newest to oldest , first, last name ascending or descending
+        //it will return list or records since we have used return type arrayList<CompanyModel>
+
+
+        String selectQuery ="SELECT * FROM "+Constants.Stock +" WHERE "+Constants.C_ID+ " = '"+id+"'";
+        SQLiteDatabase db =this.getWritableDatabase();
+        Cursor cursor=db.rawQuery(selectQuery,null);
+
+        StockModel st=new StockModel();
+        if(cursor.moveToFirst()){
+            do {
+                @SuppressLint("Range") StockModel stockModel=new StockModel(
+                        ""+ cursor.getInt(cursor.getColumnIndex(Constants.C_ID)),
+                        ""+cursor.getString(cursor.getColumnIndex(Constants.productName)),
+                        ""+cursor.getString(cursor.getColumnIndex(Constants.batchNo)),
+                        ""+cursor.getString(cursor.getColumnIndex(Constants.quantity)),
+                        ""+cursor.getString(cursor.getColumnIndex(Constants.expDate)),
+                        ""+cursor.getString(cursor.getColumnIndex(Constants.supplier)),
+                        ""+cursor.getString(cursor.getColumnIndex(Constants.costPrice)),
+                        ""+cursor.getString(cursor.getColumnIndex(Constants.sellingPrice)),
+                        ""+cursor.getString(cursor.getColumnIndex(Constants.barcode)),
+                        ""+cursor.getString(cursor.getColumnIndex(Constants.unit)),
+                        ""+cursor.getString(cursor.getColumnIndex(Constants.desc)),
+                        ""+cursor.getString(cursor.getColumnIndex(Constants.C_ADDED)),
+                        ""+cursor.getString(cursor.getColumnIndex(Constants.C_UPDATED))
+                );
+
+                //add record to list
+                st=stockModel;
+            }while (cursor.moveToNext());
+
+        }
+
+        //close db connection
+        db.close();
+
+
+        //return the list
+        return st.getQuantity();
+    }
+
+    public String getLog(String s) {
+
+
+        String selectQuery ="SELECT * FROM "+Constants.Log +" WHERE "+Constants.C_ID+ " = '"+s+"'";
+        SQLiteDatabase db =this.getWritableDatabase();
+        Cursor cursor=db.rawQuery(selectQuery,null);
+
+        LogModel st=new LogModel();
+        if(cursor.moveToFirst()){
+            do {
+                @SuppressLint("Range") LogModel log=new LogModel(
+                        ""+ cursor.getInt(cursor.getColumnIndex(Constants.C_ID)),
+                        ""+cursor.getString(cursor.getColumnIndex(Constants.desc)),
+                        ""+cursor.getString(cursor.getColumnIndex(Constants.C_ADDED))
+                );
+
+                //add record to list
+                st=log;
+            }while (cursor.moveToNext());
+
+        }
+
+        //close db connection
+        db.close();
+
+
+        //return the list
+        return st.getLog();
+    }
+
+    public void deleteUser(String s) {
+
+        //order by query will allow to sort data e.g newest to oldest , first, last name ascending or descending
+        //it will return list or records since we have used return type arrayList<CompanyModel>
+
+
+        String selectQuery ="DELETE FROM "+Constants.Users+" WHERE "+Constants.C_ID+ " = '"+s+"'";
+        SQLiteDatabase db =this.getWritableDatabase();
+        db.execSQL(selectQuery);
+        Log.e("deleted item ",s);
+        //close db connection
+        db.close();
+
+    }
+
+    public UserModel getUser(String ID) {
+        //order by query will allow to sort data e.g newest to oldest , first, last name ascending or descending
+        //it will return list or records since we have used return type arrayList<Usermodel>
+
+        UserModel record=new UserModel();
+        String selectQuery ="SELECT * FROM "+Constants.Users+" WHERE "+Constants.C_ID+ " = '"+ID+"'";
+        SQLiteDatabase db =this.getWritableDatabase();
+        Cursor cursor=db.rawQuery(selectQuery,null);
+        if(cursor.moveToFirst()){
+            do {
+                @SuppressLint("Range") UserModel userModel=new UserModel(
+                        ""+ cursor.getInt(cursor.getColumnIndex(Constants.C_ID)),
+                        ""+cursor.getString(cursor.getColumnIndex(Constants.FIRSTNAME)),
+                        ""+cursor.getString(cursor.getColumnIndex(Constants.LASTNAME)),
+                        ""+cursor.getString(cursor.getColumnIndex(Constants.USERNAME)),
+                        ""+cursor.getString(cursor.getColumnIndex(Constants.PASSWORD)),
+                        ""+cursor.getString(cursor.getColumnIndex(Constants.C_ADDRESS)),
+                        ""+cursor.getString(cursor.getColumnIndex(Constants.C_PHONE)),
+                        ""+cursor.getString(cursor.getColumnIndex(Constants.USERLEVEL)),
+                        ""+cursor.getString(cursor.getColumnIndex(Constants.C_EMAIL)),
+                        ""+cursor.getString(cursor.getColumnIndex(Constants.C_ADDED)),
+                        ""+cursor.getString(cursor.getColumnIndex(Constants.C_UPDATED)),
+                        ""+cursor.getString(cursor.getColumnIndex(Constants.userLog))
+
+                );
+
+                //add record to list
+                record=userModel;
+            }while (cursor.moveToNext());
+
+        }
+        //close db connection
+        db.close();
+
+
+        //return the list
+        return record;
+    }
+
+    public void updateUser(String id, String firstname, String lastname,
+                           String username, String pass, String phone,
+                           String level, String addr, String email,
+                           String dateUpdated) {
+        //get Writable database
+        SQLiteDatabase db = this.getWritableDatabase();
+
+        ContentValues values = new ContentValues();
+
+        //id will auto generated by auto increment
+
+        //insertData
+        values.put(Constants.FIRSTNAME, firstname  );
+        values.put(Constants.LASTNAME, lastname  );
+        values.put(Constants.USERNAME, username );
+        values.put(Constants.PASSWORD, pass  );
+        values.put(Constants.C_PHONE, phone );
+        values.put(Constants.USERLEVEL, level  );
+        values.put(Constants.C_ADDRESS, addr );
+        values.put(Constants.C_EMAIL, email  );
+        values.put(Constants.C_UPDATED, dateUpdated );
+        //insert row , it will return record id of saved record
+        db.update(Constants.Users, values,Constants.C_ID +" = ?",new String[]{id});
+
+        //close connection
+        db.close();
+
+
+    }
+
+    public void updateUserLog(String id, String log) {
+        //get Writable database
+        SQLiteDatabase db = this.getWritableDatabase();
+
+        ContentValues values = new ContentValues();
+
+        //id will auto generated by auto increment
+
+        //insertData
+
+        values.put(Constants.userLog, log);
+
+        //insert row , it will return record id of saved record
+        db.update(Constants.Users, values,Constants.C_ID +" = ?",new String[]{id});
+
+        //close connection
+        db.close();
+    }
+
+
+    public long addLogged(String level,String uuid) {
+        //get Writable database
+        SQLiteDatabase db = this.getWritableDatabase();
+
+        ContentValues values = new ContentValues();
+
+        //id will auto generated by auto increment
+
+        //insertData
+
+
+        values.put(Constants.USERLEVEL, level);
+        values.put(Constants.userId, uuid);
+        //insert row , it will return record id of saved record
+        long id = db.insert(Constants.Logged, null, values);
+
+        //close connection
+        db.close();
+
+        return id;
+    }
+
+
+    public void updateLogged(String id, String level,String uuid) {
+        //get Writable database
+        SQLiteDatabase db = this.getWritableDatabase();
+
+        ContentValues values = new ContentValues();
+
+        //id will auto generated by auto increment
+
+        //insertData
+
+        values.put(Constants.USERLEVEL, level);
+        values.put(Constants.userId, uuid);
+
+        //insert row , it will return record id of saved record
+        db.update(Constants.Logged, values,Constants.C_ID +" = ?",new String[]{id});
+
+        //close connection
+        db.close();
+    }
+
+    public LoggedModel getLogged(String ID) {
+        //order by query will allow to sort data e.g newest to oldest , first, last name ascending or descending
+        //it will return list or records since we have used return type arrayList<Usermodel>
+
+        LoggedModel record=new LoggedModel();
+        String selectQuery ="SELECT * FROM "+Constants.Logged+" WHERE "+Constants.C_ID+ " = '"+ID+"'";
+        SQLiteDatabase db =this.getWritableDatabase();
+        Cursor cursor=db.rawQuery(selectQuery,null);
+        if(cursor.moveToFirst()){
+            do {
+                @SuppressLint("Range") LoggedModel userModel=new LoggedModel(
+                        ""+ cursor.getInt(cursor.getColumnIndex(Constants.C_ID)),
+                        ""+cursor.getString(cursor.getColumnIndex(Constants.USERLEVEL)),
+                        ""+cursor.getString(cursor.getColumnIndex(Constants.userId))
+                        );
+                //add record to list
+                record=userModel;
+            }while (cursor.moveToNext());
+
+        }
+        //close db connection
+        db.close();
+
+
+        //return the list
+        return record;
+    }
+
+
+    public void updateCompany(String s, CompanyModel n) {
+
+        //get Writable database
+        SQLiteDatabase db = this.getWritableDatabase();
+
+        ContentValues values = new ContentValues();
+
+        //id will auto generated by auto increment
+
+        //insertData
+
+        values.put(Constants.C_OWNER, n.getOwnerName());
+        values.put(Constants.C_STORENAME, n.getStoreName());
+        values.put(Constants.C_PHONE, n.getPhone());
+        values.put(Constants.C_WHATSAPP, n.getWhatsapp());
+        values.put(Constants.C_ADDRESS, n.getAddress());
+        values.put(Constants.C_EMAIL, n.getEmail());
+        values.put(Constants.C_ADDED,n.getDateCreated());
+        values.put(Constants.C_UPDATED, n.getDateUpadted());
+        values.put(Constants.desc, n.getInfo());
+
+
+        //insert row , it will return record id of saved record
+        db.update(Constants.Company, values,Constants.C_ID +" = ?",new String[]{s});
+
+        //close connection
+        db.close();
     }
 }

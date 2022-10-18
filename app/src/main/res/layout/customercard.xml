@@ -157,15 +157,16 @@
             <RelativeLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content">
+
                 <Button
-                    android:layout_width="wrap_content"
-                    android:layout_height="35dp"
-                    android:text="Update Log"
-                    android:textSize="10sp"
                     android:id="@+id/updatebtn"
                     style="@style/Widget.AppCompat.Button"
+                    android:layout_width="wrap_content"
+                    android:layout_height="35dp"
+                    android:background="#eeeeee"
                     android:elevation="14dp"
-                    android:background="#eeeeee" />
+                    android:text="Update Log"
+                    android:textSize="10sp" />
                 <Button
                     android:layout_width="wrap_content"
                     android:layout_height="35dp"

@@ -32,7 +32,7 @@ import java.util.Comparator;
 
 public class items extends Fragment implements SearchView.OnQueryTextListener {
     View v;
-    String uid;
+    String level;
 
     MyAdapter adapter;
     private RecyclerView rv;
@@ -69,15 +69,21 @@ public class items extends Fragment implements SearchView.OnQueryTextListener {
     @Override
     public void onResume() {
         super.onResume();
+        dbHelper=new MyDbHelper(getContext());
+        level=dbHelper.getLogged("1").getLevel();
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent i = new Intent(getContext(), AddStock.class);
-                startActivity(i);
+                if(level.equals("user")){
+                    Toast.makeText(getContext(),"UnAuthorized",Toast.LENGTH_SHORT).show();
+                }else {
+                    Intent i = new Intent(getContext(), AddStock.class);
+                    startActivity(i);
+                }
             }
         });
         fab.show();
-        dbHelper=new MyDbHelper(getContext());
+
         adapter = new MyAdapter(getContext(), retrieve());
 
 
@@ -222,8 +228,8 @@ public class items extends Fragment implements SearchView.OnQueryTextListener {
             models.add(stockModel);
         }
 
-        String TransDate=models.get(0).getDateUpdated();
-        System.out.println(" Date added  =========" +TransDate);
+     //   String TransDate=models.get(0).getDateUpdated();
+       // System.out.println(" Date added  =========" +TransDate);
 
 
 

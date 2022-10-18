@@ -29,8 +29,9 @@ public class Login extends AppCompatActivity {
     ImageView itext, ilogo;
     EditText txtUsername, txtPassword;
     Button btnLogin;
-    TextView txtUserType;
+    TextView txtUserType ,register,forgotPassword,r;
     String userLevel;
+
 
     private MyDbHelper dbHelper;
     ArrayList<UserModel> list;
@@ -50,7 +51,9 @@ public class Login extends AppCompatActivity {
                 WindowManager.LayoutParams.FLAG_FULLSCREEN);
         setContentView(R.layout.activity_login);
 
-
+        register=findViewById(R.id.register);
+        r=findViewById(R.id.r);
+        forgotPassword=findViewById(R.id.forgotPassword);
         txtUserType = findViewById(R.id.userType);
         txtUsername = findViewById(R.id.txtUsername);
         txtPassword = findViewById(R.id.txtPassword);
@@ -66,29 +69,62 @@ public class Login extends AppCompatActivity {
         assert userLevel != null;
         txtUserType.setText(userLevel.concat(" Login"));
 
+        if(userLevel.equals("Admin")){
+            register.setVisibility(View.GONE);
+            r.setVisibility(View.GONE);
+        }
+
 
         btnLogin.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 String level = userLevel.toLowerCase();
                 String username = txtUsername.getText().toString().trim();
-                String password = txtPassword.getText().toString();
+                String password = txtPassword.getText().toString().trim();
 
                 list = dbHelper.searchUser(username, password, level);
-                if (list.size() < 1) {
-                    Toast.makeText(Login.this, "Invalid Credentials", Toast.LENGTH_SHORT).show();
-                } else {
-                    Toast.makeText(Login.this, "Login successful", Toast.LENGTH_SHORT).show();
 
-                    Intent intent=new Intent(Login.this,MainActivity.class);
-                    intent.putExtra("userLevel",level);
-                    intent.putExtra("userName",username);
+                if(username.isEmpty()||password.isEmpty()){
+                    Toast.makeText(Login.this, "Fill in All Details", Toast.LENGTH_SHORT).show();
+                }else {
+                    if (list.size() < 1) {
+                        Toast.makeText(Login.this, "Invalid Credentials", Toast.LENGTH_SHORT).show();
+                    } else {
+                        Toast.makeText(Login.this, "Login successful", Toast.LENGTH_SHORT).show();
 
-                    Clear();
-                    startActivity(intent);
-                    finish();
+                        LoggedModel m = dbHelper.getLogged("1");
+                        if (m.getLevel() == null) {
+                            dbHelper.addLogged(level, list.get(0).getId());
+                        } else {
+                            dbHelper.updateLogged("1", level, list.get(0).getId());
+                        }
 
+
+                        Intent intent = new Intent(Login.this, MainActivity.class);
+                        intent.putExtra("userLevel", level);
+                        intent.putExtra("id", list.get(0).getId());
+                        intent.putExtra("userName", username);
+
+                        Clear();
+                        startActivity(intent);
+                        finish();
+
+                    }
                 }
+            }
+        });
+
+
+
+        register.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent=new Intent(Login.this,Newuser.class);
+                intent.putExtra("userLevel","user");
+                intent.putExtra("task","register");
+
+                Clear();
+                startActivity(intent);
 
             }
         });

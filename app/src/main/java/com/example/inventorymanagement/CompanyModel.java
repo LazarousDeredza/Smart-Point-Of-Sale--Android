@@ -10,12 +10,13 @@ public class CompanyModel {
     private String Email;
     private String DateCreated;
     private String DateUpadted;
+    private String info;
 
 
     public CompanyModel() {
     }
 
-    public CompanyModel(String id, String ownerName, String storeName, String address, String phone, String whatsapp, String email, String dateCreated, String dateUpadted) {
+    public CompanyModel(String id, String ownerName, String storeName, String address, String phone, String whatsapp, String email, String dateCreated, String dateUpadted, String info) {
         this.id = id;
         OwnerName = ownerName;
         StoreName = storeName;
@@ -25,6 +26,7 @@ public class CompanyModel {
         Email = email;
         DateCreated = dateCreated;
         DateUpadted = dateUpadted;
+        this.info = info;
     }
 
     public String getId() {
@@ -97,5 +99,13 @@ public class CompanyModel {
 
     public void setDateUpadted(String dateUpadted) {
         DateUpadted = dateUpadted;
+    }
+
+    public String getInfo() {
+        return info;
+    }
+
+    public void setInfo(String info) {
+        this.info = info;
     }
 }

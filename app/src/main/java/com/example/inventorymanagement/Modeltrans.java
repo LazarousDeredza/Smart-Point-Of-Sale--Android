@@ -6,16 +6,18 @@ public class Modeltrans {
     private String gtotamt;
     private String gtranid;
     private String key;
+    private String biller;
 
     public Modeltrans() {
     }
 
-    public Modeltrans(String gdate, String gitems, String gtotamt, String gtranid, String key) {
+    public Modeltrans(String gdate, String gitems, String gtotamt, String gtranid, String key, String biller) {
         this.gdate = gdate;
         this.gitems = gitems;
         this.gtotamt = gtotamt;
         this.gtranid = gtranid;
         this.key = key;
+        this.biller = biller;
     }
 
     public String getGdate() {
@@ -56,5 +58,13 @@ public class Modeltrans {
 
     public void setKey(String key) {
         this.key = key;
+    }
+
+    public String getBiller() {
+        return biller;
+    }
+
+    public void setBiller(String biller) {
+        this.biller = biller;
     }
 }

@@ -2,17 +2,30 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     package="com.example.inventorymanagement">
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"/>
 
     <application
         android:allowBackup="true"
         android:dataExtractionRules="@xml/data_extraction_rules"
         android:fullBackupContent="@xml/backup_rules"
-        android:icon="@drawable/logo"
+        android:icon="@drawable/home11"
         android:label="@string/app_name"
-        android:roundIcon="@drawable/logo"
+        android:roundIcon="@drawable/home11"
         android:supportsRtl="true"
         android:theme="@style/InventoryManagement"
         tools:targetApi="31">
+        <activity
+            android:name=".UpdateInfo"
+            android:exported="false" />
+        <activity
+            android:name=".UserLog"
+            android:exported="false" />
+        <activity
+            android:name=".Newuser"
+            android:exported="false" />
+        <activity
+            android:name=".SampleBill"
+            android:exported="false" />
         <activity
             android:name=".CustomerLog"
             android:exported="false" />

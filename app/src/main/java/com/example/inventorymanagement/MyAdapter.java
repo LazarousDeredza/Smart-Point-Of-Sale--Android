@@ -26,7 +26,8 @@ public class MyAdapter extends RecyclerView.Adapter<MyViewHolder> implements Fil
     ArrayList<StockModel> models, filterList;
 
     CustomFilter filter;
-    private MyDbHelper dbHelper;
+    String level="";
+     MyDbHelper dbHelper;
 
     public MyAdapter(Context c, ArrayList<StockModel> stockModels) {
 
@@ -39,6 +40,7 @@ public class MyAdapter extends RecyclerView.Adapter<MyViewHolder> implements Fil
     public MyViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
 
         View v = LayoutInflater.from(c).inflate(R.layout.card_layout, parent, false);
+        dbHelper = new MyDbHelper(c);
         return new MyViewHolder(v);
     }
 
@@ -49,6 +51,9 @@ public class MyAdapter extends RecyclerView.Adapter<MyViewHolder> implements Fil
 
     @Override
     public void onBindViewHolder(final MyViewHolder holder, @SuppressLint("RecyclerView") final int position) {
+
+        level=dbHelper.getLogged("1").getLevel();
+
 
         holder.item.setText(models.get(position).getProductName());
         holder.btc.setText(models.get(position).getBatchNumber());
@@ -77,20 +82,27 @@ public class MyAdapter extends RecyclerView.Adapter<MyViewHolder> implements Fil
         holder.editBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                if(level.equals("user")){
+                    Toast.makeText(c,"UnAuthorized",Toast.LENGTH_SHORT).show();
+                }else {
 
-                Intent i = new Intent(c, UpdateItem.class);
-                i.putExtra("id", models.get(position).getId());
-                c.startActivity(i);
+                    Intent i = new Intent(c, UpdateItem.class);
+                    i.putExtra("id", models.get(position).getId());
+                    c.startActivity(i);
+                }
             }
         });
 
         holder.delbtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                if(level.equals("user")){
+                    Toast.makeText(c,"UnAuthorized",Toast.LENGTH_SHORT).show();
+                }else {
 
                 final String item = models.get(position).getProductName();
-                String id =models.get(position).getId();
-                dbHelper=new MyDbHelper(v.getContext());
+                String id = models.get(position).getId();
+                dbHelper = new MyDbHelper(v.getContext());
 
                 AlertDialog.Builder alert = new AlertDialog.Builder(c);
                 alert.setTitle("Alert!!");
@@ -99,7 +111,6 @@ public class MyAdapter extends RecyclerView.Adapter<MyViewHolder> implements Fil
 
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
-
 
 
                         dbHelper.deleteFromStock(id);
@@ -112,13 +123,13 @@ public class MyAdapter extends RecyclerView.Adapter<MyViewHolder> implements Fil
                         Calendar calendar = Calendar.getInstance();
                         SimpleDateFormat format = new SimpleDateFormat("dd-MM-yyyy");
                         SimpleDateFormat fm = new SimpleDateFormat("HH:mm");
-                        String date=format.format(calendar.getTime()) + " " + fm.format(calendar.getTime()) ;
+                        String date = format.format(calendar.getTime()) + " " + fm.format(calendar.getTime());
 
-                        String log=format.format(calendar.getTime()) + "\n["
-                                + fm.format(calendar.getTime()) + "] "+item +"  Deleted from stock\n\n";
+                        String log = format.format(calendar.getTime()) + "\n["
+                                + fm.format(calendar.getTime()) + "] " + item + "  Deleted from stock\n\n";
 
-                        dbHelper.insertToLog(log,date);
-                        Log.d("delete" +" id= "+id,log);
+                        dbHelper.insertToLog(log, date);
+                        Log.d("delete" + " id= " + id, log);
 
 
                         Toast.makeText(c, item + " has been removed succesfully.", Toast.LENGTH_SHORT).show();
@@ -133,6 +144,7 @@ public class MyAdapter extends RecyclerView.Adapter<MyViewHolder> implements Fil
                 });
 
                 alert.show();
+            }
 
             }
 

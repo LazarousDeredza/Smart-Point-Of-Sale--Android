@@ -88,19 +88,23 @@ private  MyDbHelper dbHelper;
                     ""+saddr,
                     ""+semail,
                     ""+DateCreated,
-                    ""+DateCreated);
+                    ""+DateCreated,
+                ""+smore
+            );
 
             long id2=dbHelper.insertToUsers(
-                    null,
-                    null,
+                    "",
+                    "",
                     ""+"admin",
                     ""+"admin",
-                    null,
+                    "",
                     ""+"admin",
-                    null,
-                    null,
+                    "",
+                    "",
                     ""+DateCreated,
-                    ""+DateCreated);
+                    ""+DateCreated,
+                    "Account Created at "+DateCreated+"\n"
+            );
 
             Toast.makeText(this,"Company Registered Successfully",Toast.LENGTH_SHORT).show();
             Toast.makeText(this,"Super User Created with username:admin and password:admin , Login to change credentials",Toast.LENGTH_LONG).show();

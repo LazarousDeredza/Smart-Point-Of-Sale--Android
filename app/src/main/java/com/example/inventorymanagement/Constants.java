@@ -22,7 +22,7 @@ public class Constants {
     public  static final String C_EMAIL="EMAIL";
     public  static final String C_ADDED="DATEADDED";
     public  static final String C_UPDATED="DATEUPDATED";
-
+    public  static final  String desc = "description";
 
     //Create table query
     public static final String CREATE_TABLE="CREATE TABLE "+Company+" ("
@@ -34,7 +34,8 @@ public class Constants {
             +C_ADDRESS+" TEXT,"
             +C_EMAIL +" TEXT,"
             +C_ADDED+" TEXT,"
-            +C_UPDATED +" TEXT"
+            +C_UPDATED +" TEXT,"
+            +desc+" TEXT"
             +" )";
 
 
@@ -51,6 +52,7 @@ public class Constants {
     public  static final String USERLEVEL="USERLEVEL";
     public  static final String USERNAME="USERNAME";
     public  static final String PASSWORD="PASSWORD";
+    public  static final String userLog="log";
 
     //Create table query
     public static final String CREATE_TABLE2="CREATE TABLE "+Users+" ("
@@ -63,6 +65,7 @@ public class Constants {
             +USERLEVEL +" TEXT,"
             +C_ADDRESS+" TEXT,"
             +C_EMAIL +" TEXT,"
+            +userLog +" TEXT,"
             +C_ADDED+" TEXT,"
             +C_UPDATED +" TEXT"
             +" )";
@@ -83,7 +86,6 @@ public class Constants {
     public  static final  String supplier = "supplier";
     public  static final  String barcode = "barcode";
     public  static final  String costPrice = "costPrice";
-    public  static final  String desc = "description";
     public  static final String unit = "unit";
 
 
@@ -125,14 +127,17 @@ public class Constants {
     //Table Bill
 
     public static  final String Bill="bill";
-
+    public static  final String biller="biller";
     public  static final String items = "items";
     public  static final String totalAmount = "totalAmount";
+    public  static final String  trans="trans";
 
     //Create table query
     public static final String CREATE_TABLE5="CREATE TABLE "+Bill+" ("
             +C_ID +" INTEGER PRIMARY KEY AUTOINCREMENT,"
+            +trans+" TEXT,"
             +items+" TEXT,"
+            +biller+" TEXT,"
             +totalAmount +" TEXT,"
             +C_ADDED+" TEXT"
             +" )";
@@ -146,7 +151,7 @@ public class Constants {
     public  static final String  month="month";
     public  static final String  monthAmount="monthAmount";
     public  static final String  monthCount="monthCount";
-    public  static final String  trans="trans";
+
 
     //Create table query
     public static final String CREATE_TABLE6="CREATE TABLE "+Summary+" ("
@@ -179,5 +184,15 @@ public class Constants {
             +C_ADDRESS+" TEXT"
             +" )";
 
+
+    public  static final String  Logged="logged";
+    public  static final String  userId="uid";
+
+    //Create table query
+    public static final String CREATE_TABLE8="CREATE TABLE "+Logged+" ("
+            +C_ID +" INTEGER PRIMARY KEY AUTOINCREMENT,"
+            +USERLEVEL+" TEXT,"
+            +userId+" TEXT"
+            +" )";
 
 }
