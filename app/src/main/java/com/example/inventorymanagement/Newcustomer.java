@@ -15,6 +15,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import com.google.android.material.textfield.TextInputLayout;
 
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Calendar;
 
 public class Newcustomer extends AppCompatActivity implements View.OnClickListener {
@@ -86,15 +87,21 @@ public class Newcustomer extends AppCompatActivity implements View.OnClickListen
 
             String DateCreated = frmat.format(cr.getTime()) + " " + f.format(cr.getTime());
 
+            SimpleDateFormat fm = new SimpleDateFormat("HH:mm");
 
-            String log1 = frmat.format(cr.getTime()) + "\n["
-                    + f.format(cr.getTime()) + "] " + item + " Customer Account Created\n";
+            String log1="";
+            String DCreated=frmat.format(calendar.getTime()) + " " + f.format(calendar.getTime()) ;
+            ArrayList<LogModel> logs=dbHelper.getLogs();
 
 
-            long id2 = dbHelper.insertToLog(
-                    "" + log1,
-                    "" + DateCreated
-            );
+                log1 = frmat.format(cr.getTime()) + "\n["
+                        + f.format(cr.getTime()) + "] " + item + " Customer Account Created\n";
+                long id2 = dbHelper.insertToLog(
+                        "" + log1,
+                        "" + DCreated);
+
+
+
 
 
             Toast.makeText(this, "Customer is saved", Toast.LENGTH_SHORT).

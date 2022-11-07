@@ -117,15 +117,44 @@ public class MyAdapterTrans extends RecyclerView.Adapter<MyViewHolderTrans> impl
                             Calendar calendar = Calendar.getInstance();
                             SimpleDateFormat format = new SimpleDateFormat("dd-MM-yyyy");
                             SimpleDateFormat fm = new SimpleDateFormat("HH:mm");
-                            String log = format.format(calendar.getTime()) + "\n["
-                                    + fm.format(calendar.getTime()) + "] " + item
-                                    + " Transaction Deleted\n\n";
+                            String log = "";
 
-                            String DCreated = format.format(calendar.getTime()) + " " + fm.format(calendar.getTime());
 
-                            long id2 = dbHelper.insertToLog(
-                                    "" + log,
-                                    "" + DCreated);
+                            ArrayList<LogModel> logs=dbHelper.getLogs();
+
+                            String l=dbHelper.getLog(String.valueOf(logs.size()-1));
+                            String date = l.substring(0, 10);
+
+
+                            String DCreated=format.format(calendar.getTime()) + " " + fm.format(calendar.getTime()) ;
+                            if (format.format(calendar.getTime()).equals(date)) {
+                                l = l.substring(11);
+                                log = format.format(calendar.getTime()) + "\n["
+                                        + fm.format(calendar.getTime()) + "] " + item
+                                        + " Transaction Deleted\n" + l;
+                                long id2 = dbHelper.insertToLog(
+                                        "" + log,
+                                        "" + DCreated);
+                            }else{
+                                log=format.format(calendar.getTime()) + "\n["
+                                        + fm.format(calendar.getTime()) + "] " + item
+                                        + " Transaction Deleted\n\n" + l;
+                                long id2 = dbHelper.insertToLog(
+                                        "" + log,
+                                        "" + DCreated);
+                            }
+
+
+
+
+
+
+
+
+
+
+
+
 
                             Toast.makeText(c, item + " has been removed succesfully.", Toast.LENGTH_SHORT).show();
                         }

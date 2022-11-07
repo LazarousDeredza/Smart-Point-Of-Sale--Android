@@ -17,6 +17,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import com.google.android.material.textfield.TextInputLayout;
 
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Calendar;
 
 
@@ -96,6 +97,47 @@ public class UpdateInfo extends AppCompatActivity {
                     "1",
                     n
             );
+
+
+
+            ArrayList<LogModel> logs=dbHelper.getLogs();
+
+            String l=dbHelper.getLog(String.valueOf(logs.size()-1));
+            String date = l.substring(0, 10);
+
+            SimpleDateFormat r = new SimpleDateFormat("dd-MM-yyyy");
+            SimpleDateFormat t = new SimpleDateFormat("HH:mm");
+
+            String log="";
+            String DCreated=r.format(calendar.getTime()) + " " + t.format(calendar.getTime()) ;
+            if (r.format(calendar.getTime()).equals(date)) {
+                l = l.substring(11);
+                log = r.format(calendar.getTime()) + "\n["
+                        + t.format(calendar.getTime())
+                        + "] Company Info Updated"  + "\n" + l;
+                long id2 = dbHelper.insertToLog(
+                        "" + log,
+                        "" + DCreated);
+            }else{
+                log=r.format(calendar.getTime()) + "\n["
+                        + t.format(calendar.getTime())
+                        + "] Company Info Updated" + "\n\n" + l;
+                long id2 = dbHelper.insertToLog(
+                        "" + log,
+                        "" + DCreated);
+            }
+
+
+
+
+
+
+
+
+
+
+
+
 
             Toast.makeText(this,"Company Updated Successfully",Toast.LENGTH_SHORT).show();
 

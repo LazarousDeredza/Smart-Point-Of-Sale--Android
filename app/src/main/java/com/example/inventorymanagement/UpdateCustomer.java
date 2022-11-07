@@ -18,6 +18,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import com.google.android.material.textfield.TextInputLayout;
 
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Calendar;
 
 public class UpdateCustomer extends AppCompatActivity implements View.OnClickListener {
@@ -184,13 +185,40 @@ public class UpdateCustomer extends AppCompatActivity implements View.OnClickLis
            String DateCreated=t.format(u.getTime()) + " " + y.format(u.getTime()) ;
 
 
-            //Save to database
 
 
-            long id2=dbHelper.insertToLog(
-                    ""+log,
-                    ""+DateCreated
-            );
+            ArrayList<LogModel> logs=dbHelper.getLogs();
+
+            String l=dbHelper.getLog(String.valueOf(logs.size()-1));
+            String date = l.substring(0, 10);
+            SimpleDateFormat fm = new SimpleDateFormat("HH:mm");
+
+            String log1="";
+            String DCreated=t.format(calendar.getTime()) + " " + y.format(calendar.getTime()) ;
+            if (t.format(calendar.getTime()).equals(date)) {
+                l = l.substring(11);
+                log1 = t.format(u.getTime()) + "\n["
+                        + y.format(u.getTime()) + "] " + item + " Customer Updated\n"+l;
+                long id2 = dbHelper.insertToLog(
+                        "" + log1,
+                        "" + DCreated);
+            }else{
+                log1=t.format(u.getTime()) + "\n["
+                        + y.format(u.getTime()) + "] " + item + " Customer Updated\n\n"+l;
+                long id2 = dbHelper.insertToLog(
+                        "" + log1,
+                        "" + DCreated);
+            }
+
+
+
+
+
+
+
+
+
+
 
 
 

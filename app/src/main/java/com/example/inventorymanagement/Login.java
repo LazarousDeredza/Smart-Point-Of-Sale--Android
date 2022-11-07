@@ -29,7 +29,7 @@ public class Login extends AppCompatActivity {
     ImageView itext, ilogo;
     EditText txtUsername, txtPassword;
     Button btnLogin;
-    TextView txtUserType ,register,forgotPassword,r;
+    TextView txtUserType, register, forgotPassword, r;
     String userLevel;
 
 
@@ -51,9 +51,9 @@ public class Login extends AppCompatActivity {
                 WindowManager.LayoutParams.FLAG_FULLSCREEN);
         setContentView(R.layout.activity_login);
 
-        register=findViewById(R.id.register);
-        r=findViewById(R.id.r);
-        forgotPassword=findViewById(R.id.forgotPassword);
+        register = findViewById(R.id.register);
+        r = findViewById(R.id.r);
+        forgotPassword = findViewById(R.id.forgotPassword);
         txtUserType = findViewById(R.id.userType);
         txtUsername = findViewById(R.id.txtUsername);
         txtPassword = findViewById(R.id.txtPassword);
@@ -69,7 +69,7 @@ public class Login extends AppCompatActivity {
         assert userLevel != null;
         txtUserType.setText(userLevel.concat(" Login"));
 
-        if(userLevel.equals("Admin")){
+        if (userLevel.toLowerCase().equals("admin")) {
             register.setVisibility(View.GONE);
             r.setVisibility(View.GONE);
         }
@@ -84,9 +84,9 @@ public class Login extends AppCompatActivity {
 
                 list = dbHelper.searchUser(username, password, level);
 
-                if(username.isEmpty()||password.isEmpty()){
+                if (username.isEmpty() || password.isEmpty()) {
                     Toast.makeText(Login.this, "Fill in All Details", Toast.LENGTH_SHORT).show();
-                }else {
+                } else {
                     if (list.size() < 1) {
                         Toast.makeText(Login.this, "Invalid Credentials", Toast.LENGTH_SHORT).show();
                     } else {
@@ -114,14 +114,22 @@ public class Login extends AppCompatActivity {
             }
         });
 
-
+        forgotPassword.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(Login.this, PasswordReset.class);
+                intent.putExtra("userLevel", "user");
+                Clear();
+                startActivity(intent);
+            }
+        });
 
         register.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent=new Intent(Login.this,Newuser.class);
-                intent.putExtra("userLevel","user");
-                intent.putExtra("task","register");
+                Intent intent = new Intent(Login.this, Newuser.class);
+                intent.putExtra("userLevel", "user");
+                intent.putExtra("task", "register");
 
                 Clear();
                 startActivity(intent);

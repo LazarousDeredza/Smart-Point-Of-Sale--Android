@@ -38,7 +38,7 @@ public class summary extends Fragment {
         getActivity().setTitle("Summary");
         MainActivity.flag = 1;
         sample = (Button) v.findViewById(R.id.sample);
-        log = (Button) v.findViewById(R.id.log);
+      //  log = (Button) v.findViewById(R.id.log);
 
       /*  mAuth = FirebaseAuth.getInstance();
         uid = mAuth.getCurrentUser().getUid();
@@ -63,13 +63,13 @@ public class summary extends Fragment {
                 startActivity(i);
             }
         });
-        log.setOnClickListener(new View.OnClickListener() {
+       /* log.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent i = new Intent(getContext(), LogModel.class);
+                Intent i = new Intent(getContext(), Log.class);
                 startActivity(i);
             }
-        });
+        });*/
 
         CompanyModel companyModel=dbHelper.getCompany("1");
 

@@ -1327,4 +1327,75 @@ public class MyDbHelper extends SQLiteOpenHelper {
         //close connection
         db.close();
     }
+
+    public ArrayList<LogModel> getLogs() {
+        String selectQuery ="SELECT * FROM "+Constants.Log ;
+        SQLiteDatabase db =this.getWritableDatabase();
+        Cursor cursor=db.rawQuery(selectQuery,null);
+
+      ArrayList<LogModel> st= new ArrayList<>();
+        if(cursor.moveToFirst()){
+            do {
+                @SuppressLint("Range") LogModel log=new LogModel(
+                        ""+ cursor.getInt(cursor.getColumnIndex(Constants.C_ID)),
+                        ""+cursor.getString(cursor.getColumnIndex(Constants.desc)),
+                        ""+cursor.getString(cursor.getColumnIndex(Constants.C_ADDED))
+                );
+
+                //add record to list
+                st.add(log);
+            }while (cursor.moveToNext());
+
+        }
+
+        //close db connection
+        db.close();
+
+
+        //return the list
+        return st;
+
+
+    }
+
+    public ArrayList<UserModel> resetPassword(String username, String email) {
+
+        //order by query will allow to sort data e.g newest to oldest , first, last name ascending or descending
+        //it will return list or records since we have used return type arrayList<Usermodel>
+
+       ArrayList< UserModel> record=new ArrayList<>();
+        String selectQuery ="SELECT * FROM "+Constants.Users+" WHERE "+Constants.USERNAME +" LIKE '%"+ username+"%' AND " +Constants.C_EMAIL +" LIKE '%"+ email+"%'";
+        SQLiteDatabase db =this.getWritableDatabase();
+        Cursor cursor=db.rawQuery(selectQuery,null);
+        if(cursor.moveToFirst()){
+            do {
+                @SuppressLint("Range") UserModel userModel=new UserModel(
+                        ""+ cursor.getInt(cursor.getColumnIndex(Constants.C_ID)),
+                        ""+cursor.getString(cursor.getColumnIndex(Constants.FIRSTNAME)),
+                        ""+cursor.getString(cursor.getColumnIndex(Constants.LASTNAME)),
+                        ""+cursor.getString(cursor.getColumnIndex(Constants.USERNAME)),
+                        ""+cursor.getString(cursor.getColumnIndex(Constants.PASSWORD)),
+                        ""+cursor.getString(cursor.getColumnIndex(Constants.C_ADDRESS)),
+                        ""+cursor.getString(cursor.getColumnIndex(Constants.C_PHONE)),
+                        ""+cursor.getString(cursor.getColumnIndex(Constants.USERLEVEL)),
+                        ""+cursor.getString(cursor.getColumnIndex(Constants.C_EMAIL)),
+                        ""+cursor.getString(cursor.getColumnIndex(Constants.C_ADDED)),
+                        ""+cursor.getString(cursor.getColumnIndex(Constants.C_UPDATED)),
+                        ""+cursor.getString(cursor.getColumnIndex(Constants.userLog))
+
+                );
+
+                //add record to list
+                record.add(userModel);
+            }while (cursor.moveToNext());
+
+        }
+        //close db connection
+        db.close();
+
+
+        //return the list
+        return record;
+
+    }
 }

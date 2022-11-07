@@ -185,15 +185,7 @@
         android:layout_marginRight="10dp"
         android:text="View Sample Invoice"
         android:id="@+id/sample" />
-    <Button
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:elevation="15dp"
-        android:id="@+id/log"
-        android:layout_marginLeft="10dp"
-        android:layout_marginRight="10dp"
-        android:text="Log Records"
-        />
+
     <Button
         android:layout_width="match_parent"
         android:layout_height="wrap_content"

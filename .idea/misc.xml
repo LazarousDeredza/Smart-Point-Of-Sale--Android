@@ -4,11 +4,15 @@
     <option name="filePathToZoomLevelMap">
       <map>
         <entry key="..\:/Users/ninja/Documents/Projects/IM/app/src/main/res/drawable/help.xml" value="0.171" />
+        <entry key="..\:/Users/ninja/Documents/Projects/IM/app/src/main/res/layout/activity_about.xml" value="0.2234375" />
         <entry key="..\:/Users/ninja/Documents/Projects/IM/app/src/main/res/layout/activity_choose_user_type.xml" value="0.22447916666666667" />
         <entry key="..\:/Users/ninja/Documents/Projects/IM/app/src/main/res/layout/activity_customer_log.xml" value="0.22447916666666667" />
         <entry key="..\:/Users/ninja/Documents/Projects/IM/app/src/main/res/layout/activity_home.xml" value="0.1" />
-        <entry key="..\:/Users/ninja/Documents/Projects/IM/app/src/main/res/layout/activity_login.xml" value="0.33" />
+        <entry key="..\:/Users/ninja/Documents/Projects/IM/app/src/main/res/layout/activity_log.xml" value="0.2234375" />
+        <entry key="..\:/Users/ninja/Documents/Projects/IM/app/src/main/res/layout/activity_login.xml" value="0.22" />
         <entry key="..\:/Users/ninja/Documents/Projects/IM/app/src/main/res/layout/activity_main.xml" value="0.27804107424960506" />
+        <entry key="..\:/Users/ninja/Documents/Projects/IM/app/src/main/res/layout/activity_password_reset.xml" value="0.22447916666666667" />
+        <entry key="..\:/Users/ninja/Documents/Projects/IM/app/src/main/res/layout/activity_programmer.xml" value="0.21041666666666667" />
         <entry key="..\:/Users/ninja/Documents/Projects/IM/app/src/main/res/layout/activity_register.xml" value="0.18" />
         <entry key="..\:/Users/ninja/Documents/Projects/IM/app/src/main/res/layout/activity_trans.xml" value="0.33" />
         <entry key="..\:/Users/ninja/Documents/Projects/IM/app/src/main/res/layout/activity_update_info.xml" value="0.22447916666666667" />
@@ -39,6 +43,7 @@
         <entry key="..\:/Users/ninja/Documents/Projects/IM/app/src/main/res/menu/activity_main_drawer.xml" value="0.22447916666666667" />
         <entry key="..\:/Users/ninja/Documents/Projects/IM/app/src/main/res/menu/main.xml" value="0.22447916666666667" />
         <entry key="..\:/Users/ninja/Documents/Projects/IM/app/src/main/res/menu/search_bar.xml" value="0.22447916666666667" />
+        <entry key="..\:/Users/ninja/Documents/Projects/IM/app/src/main/res/xml/provider_paths.xml" value="0.22447916666666667" />
       </map>
     </option>
   </component>

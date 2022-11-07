@@ -58,7 +58,7 @@ public class SampleBill extends AppCompatActivity {
 
 
         transid.setText("1");
-        ptname.setText("unknown");
+        ptname.setText("Jon Doe");
     }
 
 }

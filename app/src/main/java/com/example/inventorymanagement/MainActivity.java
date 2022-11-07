@@ -6,7 +6,6 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
-import android.inputmethodservice.Keyboard;
 import android.os.Build;
 import android.os.Bundle;
 
@@ -37,6 +36,7 @@ import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.StringTokenizer;
 
 
 import org.apache.poi.hssf.usermodel.HSSFWorkbook;
@@ -298,11 +298,11 @@ String username,userlevel;
         }
 
         else if (id == R.id.nav_dev) {
-           /* Intent i = new Intent(this, Developer.class);
-            startActivity(i);*/
+            Intent i = new Intent(this, Programmer.class);
+            startActivity(i);
         } else if (id == R.id.nav_about) {
-         /*   Intent i = new Intent(this, About.class);
-            startActivity(i);*/
+          Intent i = new Intent(this, About.class);
+            startActivity(i);
         }
 
 
@@ -386,6 +386,8 @@ String username,userlevel;
 
 
         billlist=dbHelper.getBills();
+        ArrayList<StockModel> stockList=dbHelper.getAllStocks();
+        ArrayList<Modelcustomer> customers=dbHelper.getAllCUSTOMERS();
 
 
 
@@ -401,42 +403,133 @@ String username,userlevel;
 
         Cell cell = null;
 
-        Sheet salesSheet = null;
-        salesSheet = wb.createSheet("Sales");
+
+        // WorksheetS
+
+        Sheet salesSheet,stockSheet ,customerSheet= null;
 
 
-        //Now column and row
-        Row row = salesSheet.createRow(0);
+        if(billlist.size()>0){
+            //Sales worksheet
+            salesSheet = wb.createSheet("Sales");
+
+
+            //Now column and row
+            Row salesHeaderRow = salesSheet.createRow(0);
+            // Row row = salesSheet.createRow(0);
+
+
+            cell = salesHeaderRow.createCell(0);
+            cell.setCellValue("Invoice ID");
+
+
+            cell = salesHeaderRow.createCell(1);
+            cell.setCellValue("Product");
+
+
+            cell = salesHeaderRow.createCell(2);
+            cell.setCellValue("Quantity");
+
+            cell = salesHeaderRow.createCell(3);
+            cell.setCellValue("Unit Price");
+
+            cell = salesHeaderRow.createCell(4);
+            cell.setCellValue("Total Amount");
+
+            cell = salesHeaderRow.createCell(5);
+            cell.setCellValue("Date");
+
+            cell = salesHeaderRow.createCell(6);
+            cell.setCellValue("Cashier");
+
+            //column width
+            salesSheet.setColumnWidth(0, (15 * 200));
+            salesSheet.setColumnWidth(1, (30 * 200));
+            salesSheet.setColumnWidth(2, (15 * 200));
+            salesSheet.setColumnWidth(3, (15 * 200));
+            salesSheet.setColumnWidth(4, (15 * 200));
+            salesSheet.setColumnWidth(5, (20 * 200));
+            salesSheet.setColumnWidth(6, (25 * 200));
+
+            int y=0;
+
+            for (int i = 0; i < billlist.size(); i++) {
+                Modeltrans bill=billlist.get(i);
+
+
+                String items =bill.getGitems();
+                StringTokenizer st = new StringTokenizer(items, "®");
+                int k = -1;
+                while (st.hasMoreTokens()) {
+                    k++;
+                    y++;
+                    // Toast.makeText(Bill.this,""+k , Toast.LENGTH_SHORT).show();
+                    StringTokenizer sti = new StringTokenizer(st.nextToken(), "©");
+                    while (sti.hasMoreTokens()) {
+                        String billdate=bill.getGdate().substring(0,2)+"/"+bill.getGdate().substring(2,4)+"/"+bill.getGdate().substring(4,8);
+                        int id = Integer.parseInt(bill.getGtranid());
+                        String cashier=bill.getBiller();
+
+                        String product=sti.nextToken();
+
+                        String unitSize=sti.nextToken();
+
+
+                        String productId=sti.nextToken();
+                        int quantity= Integer.parseInt(sti.nextToken());
+
+                        double price= Double.parseDouble(sti.nextToken());
+
+
+                        double totAmount= Double.parseDouble(sti.nextToken());
 
 
 
-        cell = row.createCell(0);
-        cell.setCellValue("ID");
+
+                        Row row1 = salesSheet.createRow(y );
+
+                        cell = row1.createCell(0);
+                        cell.setCellValue(id);
+
+                        cell = row1.createCell(1);
+                        cell.setCellValue(product +" "+unitSize);
+                        //  cell.setCellStyle(cellStyle);
+
+                        cell = row1.createCell(2);
+                        cell.setCellValue(quantity);
+
+                        cell = row1.createCell(3);
+                        cell.setCellValue(price);
+                        //  cell.setCellStyle(cellStyle);
+
+                        cell = row1.createCell(4);
+                        cell.setCellValue(totAmount);
 
 
-        cell = row.createCell(1);
-        cell.setCellValue("Products");
+                        cell = row1.createCell(5);
+                        cell.setCellValue(billdate);
+                        //  cell.setCellStyle(cellStyle);
+
+                        cell = row1.createCell(6);
+                        cell.setCellValue(cashier);
 
 
-        cell = row.createCell(2);
-        cell.setCellValue("Amount");
 
-        cell = row.createCell(3);
-        cell.setCellValue("Date");
-
-        cell = row.createCell(4);
-        cell.setCellValue("Cashier");
-
-        //column width
-        salesSheet.setColumnWidth(0, (20 * 200));
-        salesSheet.setColumnWidth(1, (50 * 200));
-        salesSheet.setColumnWidth(2, (20 * 200));
-        salesSheet.setColumnWidth(3, (30 * 200));
-        salesSheet.setColumnWidth(4, (30 * 200));
+                        salesSheet.setColumnWidth(0, (15 * 200));
+                        salesSheet.setColumnWidth(1, (30 * 200));
+                        salesSheet.setColumnWidth(2, (15 * 200));
+                        salesSheet.setColumnWidth(3, (15 * 200));
+                        salesSheet.setColumnWidth(4, (15 * 200));
+                        salesSheet.setColumnWidth(5, (20 * 200));
+                        salesSheet.setColumnWidth(6, (25 * 200));
 
 
-        for (int i = 0; i < billlist.size(); i++) {
-            Row row1 = salesSheet.createRow(i + 1);
+                    }
+                }
+
+
+
+          /*  Row row1 = salesSheet.createRow(i + 1);
 
             cell = row1.createCell(0);
             cell.setCellValue(billlist.get(i).getKey());
@@ -448,7 +541,7 @@ String username,userlevel;
             cell = row1.createCell(2);
             cell.setCellValue(billlist.get(i).getGtotamt());
 
-            cell = row1.createCell(4);
+            cell = row1.createCell(3);
             cell.setCellValue((billlist.get(i).getGdate()));
             //  cell.setCellStyle(cellStyle);
 
@@ -460,9 +553,247 @@ String username,userlevel;
             salesSheet.setColumnWidth(1, (50 * 200));
             salesSheet.setColumnWidth(2, (20 * 200));
             salesSheet.setColumnWidth(3, (30 * 200));
-            salesSheet.setColumnWidth(4, (30 * 200));
+            salesSheet.setColumnWidth(4, (30 * 200));*/
 
+            }
         }
+
+
+
+
+
+       if(stockList.size()>0){
+           //Inventory Sheet
+
+
+           stockSheet = wb.createSheet("Inventory");
+
+           //Now column and row
+           Row stockHeaderRow = stockSheet.createRow(0);
+
+
+
+           cell = stockHeaderRow.createCell(0);
+           cell.setCellValue("ID");
+
+
+           cell = stockHeaderRow.createCell(1);
+           cell.setCellValue("Product");
+
+
+           cell = stockHeaderRow.createCell(2);
+           cell.setCellValue("Batch Number");
+
+           cell = stockHeaderRow.createCell(3);
+           cell.setCellValue("Quantity");
+
+           cell = stockHeaderRow.createCell(4);
+           cell.setCellValue("Expiry Date");
+
+           cell = stockHeaderRow.createCell(5);
+           cell.setCellValue("Supplier");
+
+           cell = stockHeaderRow.createCell(6);
+           cell.setCellValue("Cost Price");
+
+           cell = stockHeaderRow.createCell(7);
+           cell.setCellValue("Selling Price");
+
+           cell = stockHeaderRow.createCell(8);
+           cell.setCellValue("Barcode");
+
+           cell = stockHeaderRow.createCell(9);
+           cell.setCellValue("Unit Size");
+
+           cell = stockHeaderRow.createCell(10);
+           cell.setCellValue("Description");
+
+           cell = stockHeaderRow.createCell(11);
+           cell.setCellValue("Date Added");
+
+           cell = stockHeaderRow.createCell(12);
+           cell.setCellValue("Date Updated");
+
+
+
+           //column width
+           stockSheet.setColumnWidth(0, (10 * 200));
+           stockSheet.setColumnWidth(1, (30 * 200));
+           stockSheet.setColumnWidth(2, (15 * 200));
+           stockSheet.setColumnWidth(3, (10 * 200));
+           stockSheet.setColumnWidth(4, (15 * 200));
+           stockSheet.setColumnWidth(5, (20 * 200));
+           stockSheet.setColumnWidth(6, (20 * 200));
+           stockSheet.setColumnWidth(7, (20 * 200));
+           stockSheet.setColumnWidth(8, (20 * 200));
+           stockSheet.setColumnWidth(9, (10 * 200));
+           stockSheet.setColumnWidth(10, (25 * 200));
+           stockSheet.setColumnWidth(11, (20 * 200));
+           stockSheet.setColumnWidth(12, (20 * 200));
+
+
+
+
+           for(int i=0; i<stockList.size();i++) {
+
+
+               Row row1 = stockSheet.createRow(i + 1);
+
+               cell = row1.createCell(0);
+               cell.setCellValue(Integer.parseInt(stockList.get(i).getId()));
+
+               cell = row1.createCell(1);
+               cell.setCellValue((stockList.get(i).getProductName()));
+               //  cell.setCellStyle(cellStyle);
+
+               cell = row1.createCell(2);
+               cell.setCellValue(Integer.parseInt(stockList.get(i).getBatchNumber()));
+
+               cell = row1.createCell(3);
+               cell.setCellValue(Integer.parseInt(stockList.get(i).getQuantity()));
+               //  cell.setCellStyle(cellStyle);
+
+               cell = row1.createCell(4);
+               cell.setCellValue(stockList.get(i).getExpiryDate());
+
+               cell = row1.createCell(5);
+               cell.setCellValue(stockList.get(i).getSupplierCompany());
+
+               cell = row1.createCell(6);
+               cell.setCellValue(Double.parseDouble(stockList.get(i).getBuyingPrice()));
+
+               cell = row1.createCell(7);
+               cell.setCellValue(Double.parseDouble(stockList.get(i).getSellingPrice()));
+               //  cell.setCellStyle(cellStyle);
+
+               cell = row1.createCell(8);
+               cell.setCellValue(stockList.get(i).getBarcode());
+
+               cell = row1.createCell(9);
+               cell.setCellValue((stockList.get(i).getUnit()));
+               //  cell.setCellStyle(cellStyle);
+
+               cell = row1.createCell(10);
+               cell.setCellValue(stockList.get(i).getDescription());
+
+               cell = row1.createCell(11);
+               cell.setCellValue(stockList.get(i).getDateAdded());
+
+               cell = row1.createCell(12);
+               cell.setCellValue((stockList.get(i).getDateUpdated()));
+               //  cell.setCellStyle(cellStyle);
+
+
+
+
+               //column width
+               stockSheet.setColumnWidth(0, (10 * 200));
+               stockSheet.setColumnWidth(1, (30 * 200));
+               stockSheet.setColumnWidth(2, (15 * 200));
+               stockSheet.setColumnWidth(3, (10 * 200));
+               stockSheet.setColumnWidth(4, (15 * 200));
+               stockSheet.setColumnWidth(5, (20 * 200));
+               stockSheet.setColumnWidth(6, (20 * 200));
+               stockSheet.setColumnWidth(7, (20 * 200));
+               stockSheet.setColumnWidth(8, (20 * 200));
+               stockSheet.setColumnWidth(9, (10 * 200));
+               stockSheet.setColumnWidth(10, (25 * 200));
+               stockSheet.setColumnWidth(11, (15 * 200));
+               stockSheet.setColumnWidth(12, (15 * 200));
+
+           }
+       }
+
+
+
+
+
+
+       if(customers.size()>0)
+       {
+           //Regular Customers Sheet
+
+           customerSheet = wb.createSheet("Regular Customers");
+
+           //Now column and row
+           Row cutomerHeaderRow = customerSheet.createRow(0);
+
+
+
+           cell = cutomerHeaderRow.createCell(0);
+           cell.setCellValue("ID");
+
+
+           cell = cutomerHeaderRow.createCell(1);
+           cell.setCellValue("Name");
+
+
+           cell = cutomerHeaderRow.createCell(2);
+           cell.setCellValue("Phone Number");
+
+           cell = cutomerHeaderRow.createCell(3);
+           cell.setCellValue("Balance ");
+
+           cell = cutomerHeaderRow.createCell(4);
+           cell.setCellValue("Last Balance Update");
+
+           cell = cutomerHeaderRow.createCell(5);
+           cell.setCellValue("Address");
+
+           //column width
+           customerSheet.setColumnWidth(0, (10 * 200));
+           customerSheet.setColumnWidth(1, (20 * 200));
+           customerSheet.setColumnWidth(2, (20 * 200));
+           customerSheet.setColumnWidth(3, (10 * 200));
+           customerSheet.setColumnWidth(4, (15 * 200));
+           customerSheet.setColumnWidth(5, (25 * 200));
+
+
+
+           for(int i=0; i<customers.size();i++) {
+
+
+               Row row1 = customerSheet.createRow(i + 1);
+
+               cell = row1.createCell(0);
+               cell.setCellValue(Integer.parseInt(customers.get(i).getKey()));
+
+               cell = row1.createCell(1);
+               cell.setCellValue((customers.get(i).getEiname()));
+               //  cell.setCellStyle(cellStyle);
+
+               cell = row1.createCell(2);
+               cell.setCellValue(customers.get(i).getEphoneNo());
+
+               cell = row1.createCell(3);
+               cell.setCellValue(Double.parseDouble(customers.get(i).getEmoney()));
+               //  cell.setCellStyle(cellStyle);
+
+               cell = row1.createCell(4);
+               cell.setCellValue(customers.get(i).getEdate());
+
+               cell = row1.createCell(5);
+               cell.setCellValue(customers.get(i).getEaddr());
+
+
+
+
+
+               //column width
+               customerSheet.setColumnWidth(0, (10 * 200));
+               customerSheet.setColumnWidth(1, (20 * 200));
+               customerSheet.setColumnWidth(2, (20 * 200));
+               customerSheet.setColumnWidth(3, (10 * 200));
+               customerSheet.setColumnWidth(4, (15 * 200));
+               customerSheet.setColumnWidth(5, (25 * 200));
+
+
+           }
+
+       }
+
+
+
 
         String folderName = storeName+" Database Backup Excel";
         String fileName = "Backup " + date+ ".xls";

@@ -17,6 +17,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import com.google.android.material.textfield.TextInputLayout;
 
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Calendar;
 
 public class AddStock extends AppCompatActivity implements View.OnClickListener {
@@ -99,13 +100,60 @@ public class AddStock extends AppCompatActivity implements View.OnClickListener 
             String DateCreated="";
             String DateUpdated="";
 
+
             Calendar calendar = Calendar.getInstance();
             SimpleDateFormat format = new SimpleDateFormat("dd-MM-yyyy");
             SimpleDateFormat fm = new SimpleDateFormat("HH:mm");
-            DateCreated=format.format(calendar.getTime()) + " " + fm.format(calendar.getTime()) ;
 
-            String log=format.format(calendar.getTime()) + "\n["
-                    + fm.format(calendar.getTime()) + "] "+quantity +" x "+unit +" of " + productName + " Added to stock\n\n";
+            String log="";
+            String DCreated=format.format(calendar.getTime()) + " " + fm.format(calendar.getTime()) ;
+
+            ArrayList<LogModel> logs=dbHelper.getLogs();
+
+            if(logs.size()>0) {
+
+                String l = dbHelper.getLog(String.valueOf(logs.size() - 1));
+                String date = l.substring(0, 10);
+
+                if (format.format(calendar.getTime()).equals(date)) {
+                    l = l.substring(11);
+
+                    log = "["+ fm.format(calendar.getTime()) + "] " + quantity + " x " + unit + " of " + productName + " Added to stock\n" ;
+
+                    long id2 = dbHelper.insertToLog(
+                            "" + log,
+                            "" + DCreated);
+                } else {
+
+                    log = format.format(calendar.getTime()) + "\n["
+                            + fm.format(calendar.getTime()) + "] " + quantity + " x " + unit + " of " + productName + " Added to stock\n\n" ;
+
+
+                    long id2 = dbHelper.insertToLog(
+                            "" + log,
+                            "" + DCreated);
+                }
+
+            }else{
+                log = format.format(calendar.getTime()) + "\n["
+                        + fm.format(calendar.getTime()) + "] " + quantity + " x " + unit + " of " + productName + " Added to stock\n" ;
+
+                long id2 = dbHelper.insertToLog(
+                        "" + log,
+                        "" + DCreated);
+            }
+
+
+
+
+
+
+
+
+
+
+
+
 
             //Save to database
             long id=dbHelper.insertToStock(

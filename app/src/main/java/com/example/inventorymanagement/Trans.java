@@ -238,7 +238,9 @@ public class Trans extends AppCompatActivity implements View.OnClickListener {
 
                                 // log
 
-                                String l=dbHelper.getLog("1");
+                                ArrayList<LogModel> logs=dbHelper.getLogs();
+
+                                String l=dbHelper.getLog(String.valueOf(logs.size()-1));
                                 String date = l.substring(0, 10);
                                 Calendar calendar = Calendar.getInstance();
                                 SimpleDateFormat format = new SimpleDateFormat("dd-MM-yyyy");

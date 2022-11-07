@@ -20,6 +20,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import com.google.android.material.textfield.TextInputLayout;
 
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Calendar;
 
 public class UpdateItem extends AppCompatActivity implements View.OnClickListener {
@@ -160,12 +161,42 @@ public class UpdateItem extends AppCompatActivity implements View.OnClickListene
                             Calendar calendar = Calendar.getInstance();
                             SimpleDateFormat format = new SimpleDateFormat("dd-MM-yyyy");
                             SimpleDateFormat fm = new SimpleDateFormat("HH:mm");
-                            String date=format.format(calendar.getTime()) + " " + fm.format(calendar.getTime()) ;
 
-                            String log=format.format(calendar.getTime()) + "\n["
-                                    + fm.format(calendar.getTime()) + "] "+item +"  Deleted from stock\n\n";
 
-                            dbHelper.insertToLog(log,date);
+                            String log="";
+
+
+
+                            ArrayList<LogModel> logs=dbHelper.getLogs();
+
+                            String l=dbHelper.getLog(String.valueOf(logs.size()-1));
+                            String date = l.substring(0, 10);
+
+
+
+                            String DCreated=format.format(calendar.getTime()) + " " + fm.format(calendar.getTime()) ;
+                            if (format.format(calendar.getTime()).equals(date)) {
+                                l = l.substring(11);
+                                log = format.format(calendar.getTime()) + "\n["
+                                        + fm.format(calendar.getTime()) + "] "+item +"  Deleted from stock\n"+l;
+                                long id2 = dbHelper.insertToLog(
+                                        "" + log,
+                                        "" + DCreated);
+                            }else{
+                                log=format.format(calendar.getTime()) + "\n["
+                                        + fm.format(calendar.getTime()) + "] "+item +"  Deleted from stock\n\n"+l;
+                                long id2 = dbHelper.insertToLog(
+                                        "" + log,
+                                        "" + DCreated);
+                            }
+
+
+
+
+
+
+
+                            // dbHelper.insertToLog(log,date);
                             Log.d("delete" +" id= "+id,log);
 
 
@@ -216,14 +247,40 @@ public class UpdateItem extends AppCompatActivity implements View.OnClickListene
                 supplier,costPrice,sellingPrice,barcode,unit,desc,
                 dateAdded,dateUpdated);
 
-            String log=format.format(calendar.getTime()) + "\n["
-                    + fm.format(calendar.getTime()) + "] "+ productName + " Was Updated \n\n";
+            String log="";
 
-            // log
-            long id2=dbHelper.insertToLog(
-                    ""+log,
-                    ""+dateUpdated
-            );
+
+            ArrayList<LogModel> logs=dbHelper.getLogs();
+
+            String l=dbHelper.getLog(String.valueOf(logs.size()-1));
+            String date = l.substring(0, 10);
+
+
+
+            String DCreated=format.format(calendar.getTime()) + " " + fm.format(calendar.getTime()) ;
+            if (format.format(calendar.getTime()).equals(date)) {
+                l = l.substring(11);
+                log = format.format(calendar.getTime()) + "\n["
+                        + fm.format(calendar.getTime()) + "] "+ productName + " Was Updated \n"+l;
+                long id2 = dbHelper.insertToLog(
+                        "" + log,
+                        "" + DCreated);
+            }else{
+                log=format.format(calendar.getTime()) + "\n["
+                        + fm.format(calendar.getTime()) + "] "+ productName + " Was Updated \n\n"+l;
+                long id2 = dbHelper.insertToLog(
+                        "" + log,
+                        "" + DCreated);
+            }
+
+
+
+
+
+
+
+
+
 
             Toast.makeText(this,"Item Updated Successfully",Toast.LENGTH_SHORT).show();
 

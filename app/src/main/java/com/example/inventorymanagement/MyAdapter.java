@@ -125,10 +125,47 @@ public class MyAdapter extends RecyclerView.Adapter<MyViewHolder> implements Fil
                         SimpleDateFormat fm = new SimpleDateFormat("HH:mm");
                         String date = format.format(calendar.getTime()) + " " + fm.format(calendar.getTime());
 
-                        String log = format.format(calendar.getTime()) + "\n["
-                                + fm.format(calendar.getTime()) + "] " + item + "  Deleted from stock\n\n";
+                        String log = "";
 
                         dbHelper.insertToLog(log, date);
+
+
+
+                        ArrayList<LogModel> logs=dbHelper.getLogs();
+
+                        String l=dbHelper.getLog(String.valueOf(logs.size()-1));
+
+
+                        String DCreated=format.format(calendar.getTime()) + " " + fm.format(calendar.getTime()) ;
+                        if (format.format(calendar.getTime()).equals(date)) {
+                            l = l.substring(11);
+                            log = format.format(calendar.getTime()) + "\n["
+                                    + fm.format(calendar.getTime()) + "] " + item + "  Deleted from stock\n" + l;
+                            long id2 = dbHelper.insertToLog(
+                                    "" + log,
+                                    "" + DCreated);
+                        }else{
+                            log=format.format(calendar.getTime()) + "\n["
+                                    + fm.format(calendar.getTime()) + "] " + item + "  Deleted from stock\n\n" + l;
+                            long id2 = dbHelper.insertToLog(
+                                    "" + log,
+                                    "" + DCreated);
+                        }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
                         Log.d("delete" + " id= " + id, log);
 
 
